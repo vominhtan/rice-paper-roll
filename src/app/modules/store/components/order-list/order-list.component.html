@@ -1,0 +1,70 @@
+<ng-container *ngIf="isLoading; else loaded">
+  <div class="loading-indicator">
+    <mat-progress-spinner class="loading-indicator" [color]="'primary'" [mode]="'indeterminate'">
+    </mat-progress-spinner>
+  </div>
+</ng-container>
+
+<ng-template #table let-showHeader="showHeader" let-dataSource="dataSource">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+    <ng-container matColumnDef="customerName">
+      <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.customerName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="created_at">
+      <th mat-header-cell *matHeaderCellDef>Created at</th>
+      <td mat-cell *matCellDef="let element">{{ element.created_at | dateFormat }}</td>
+    </ng-container>
+    <ng-container matColumnDef="updated_at">
+      <th mat-header-cell *matHeaderCellDef>Updated at</th>
+      <td mat-cell *matCellDef="let element">{{ element.updated_at | dateFormat }}</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon (click)="openDeleteDialog(element)">delete</mat-icon>
+      </td>
+    </ng-container>
+
+    <ng-container *ngIf="showHeader">
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsWithActions"></tr>
+    </ng-container>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsWithActions"></tr>
+  </table>
+</ng-template>
+<ng-template #loaded>
+  <ng-container *ngTemplateOutlet="table; context: { showHeader: true, dataSource: items}"></ng-container>
+  <ng-container *ngTemplateOutlet="table; context: { showHeader: false, dataSource: items }"></ng-container>
+  <button mat-fab class="add-new-row-button" *ngIf="!isAddingNewItem" (click)="addNewItem()">
+    <mat-icon>add</mat-icon>
+  </button>
+  <ng-container *ngIf="isAddingNewItem" [formGroup]="form">
+    <table mat-table [dataSource]="[{}]">
+      <ng-container matColumnDef="id">
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+      <ng-container matColumnDef="customerName">
+        <td mat-cell *matCellDef="let element">
+          <mat-form-field>
+            <input matInput placeholder="Customer Name" [formControlName]="'customerName'" />
+          </mat-form-field>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="created_at">
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+      <ng-container matColumnDef="updated_at">
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></tr>
+    </table>
+
+    <button mat-fab class="add-new-row-button" (click)="save()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </ng-container>
+</ng-template>

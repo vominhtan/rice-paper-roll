@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MainViewComponent } from './components';
+import { LandingMainViewComponent } from './components';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: MainViewComponent,
+    component: LandingMainViewComponent,
   },
 ];
 

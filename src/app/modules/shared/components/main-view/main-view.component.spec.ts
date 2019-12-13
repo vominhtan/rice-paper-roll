@@ -7,15 +7,15 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import { LandingMainViewComponent } from './main-view.component';
+import { MainViewComponent } from './main-view.component';
 
-describe('LandingMainViewComponent', () => {
-  let component: LandingMainViewComponent;
-  let fixture: ComponentFixture<LandingMainViewComponent>;
+describe('MainViewComponent', () => {
+  let component: MainViewComponent;
+  let fixture: ComponentFixture<MainViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LandingMainViewComponent],
+      declarations: [MainViewComponent],
       imports: [
         NoopAnimationsModule,
         LayoutModule,
@@ -29,7 +29,7 @@ describe('LandingMainViewComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LandingMainViewComponent);
+    fixture = TestBed.createComponent(MainViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

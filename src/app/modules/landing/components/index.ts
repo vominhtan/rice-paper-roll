@@ -1,1 +1,1 @@
-export { MainViewComponent } from './main-view/main-view.component';
+export { LandingMainViewComponent } from './main-view/main-view.component';

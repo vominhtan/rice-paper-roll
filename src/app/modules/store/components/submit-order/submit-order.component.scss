@@ -1,0 +1,26 @@
+.order-card {
+  max-width: 400px;
+}
+
+.order-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+div.step-container {
+  display: flex;
+  justify-content: center;
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+
+  > * {
+    width: 100%;
+  }
+}
+
+.order-create-sucess {
+  padding: 10px;
+}
