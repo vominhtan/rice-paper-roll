@@ -7,19 +7,26 @@ import { finalize } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { Order } from '../../model/order.model';
 import { OrderService } from '../../services/order.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'rpr-order-list',
   templateUrl: './order-list.component.html',
   styleUrls: ['./order-list.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class OrderListComponent extends ListComponent<Order> implements OnInit {
   displayedColumns: string[] = ['id', 'customerName', 'created_at', 'updated_at'];
   displayedColumnsWithActions: string[];
   isLoading = true;
   form: FormGroup;
-
-  selectedIndex = 0;
+  expandedElement: Order | null;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -33,14 +40,6 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
       product: [''],
     });
     this.displayedColumnsWithActions = [...this.displayedColumns, 'actions'];
-  }
-
-  get headItems(): Order[] {
-    return _.take(this.items, this.items.length + 1);
-  }
-
-  get tailItems(): Order[] {
-    return _.takeRight(this.items, this.items.length - this.selectedIndex);
   }
 
   ngOnInit() {
@@ -67,6 +66,10 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
       });
   }
 
+  itemClick(element: Order) {
+    this.selectedIndex = _.findIndex(this.items, { id: element.id });
+  }
+
   addNewItem() {
     this.form.reset({});
     super.addNewItem();
@@ -86,7 +89,7 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
   }
 
   save() {
-    this.orderService.add(this.form.value).subscribe(() => {});
+    this.orderService.add(this.form.value).subscribe(() => { });
     this.standBy();
   }
 
@@ -101,7 +104,7 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.orderService.delete(result).subscribe(() => {});
+        this.orderService.delete(result).subscribe(() => { });
       }
     });
   }
