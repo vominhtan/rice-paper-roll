@@ -8,8 +8,9 @@ export abstract class JexiaDataSetEndpoint<T extends object> {
     this.dataset = dataOperations.dataset<T>(datasetName);
   }
 
-  public fetch(): Observable<T[]> {
-    return from(this.dataset.select().execute() as Promise<T[]>);
+  public fetch(related?: keyof T): Observable<T[]> {
+    const selectQuery = this.dataset.select();
+    return from((related ? selectQuery.related(related) : selectQuery).execute() as Promise<T[]>);
   }
 
   public add(data: T): Observable<T[]> {
@@ -17,7 +18,12 @@ export abstract class JexiaDataSetEndpoint<T extends object> {
   }
 
   public delete(data: T): Observable<T[]> {
-    return from(this.dataset.delete().where(field('id').isEqualTo(data['id'])).execute() as Promise<T[]>)
+    return from(
+      this.dataset
+        .delete()
+        .where(field('id').isEqualTo(data['id']))
+        .execute() as Promise<T[]>,
+    );
   }
 
   public deleteAll(): void {}

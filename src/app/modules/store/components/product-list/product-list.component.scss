@@ -12,6 +12,10 @@ table {
   margin-top: -28px;
 }
 .loading-indicator {
-  width: 100%;
-  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.list-product {
+  padding: 10px 10px 0 10px;
 }

@@ -1,7 +1,7 @@
 <ng-container *ngIf="isOrderPlaced; else stepperForm">
   <div class="order-create-sucess">
     <p>Bác hạc đại phú đã nhật được đơn hàng, Ông giáo ạ! Ông vui lòn g đợi trông giây lát. Tui sẽ ship tới ngay!</p>
-    <p><span>Wei! Trong trường hợp muốn order thêm nhấn vào đây nha => </span><button mat-button color="primary">Tui muốn đặt món mới</button></p>
+    <p><span>Wei! Trong trường hợp muốn order thêm nhấn vào đây nha => </span><button mat-button color="secondary" (click)="resetForm();">Tui muốn đặt món mới</button></p>
   </div>
 </ng-container>
 

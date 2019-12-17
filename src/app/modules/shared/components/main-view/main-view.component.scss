@@ -15,3 +15,15 @@
   top: 0;
   z-index: 1;
 }
+
+:host ::ng-deep {
+  .content-with-toolbar {
+    > div.content {
+      height: calc(100vh - 64px);
+      & > *:not(router-outlet) {
+        display: block;
+        height: 100%;
+      }
+    }
+  }
+}

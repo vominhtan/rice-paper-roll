@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../model/product.model';
 import { ListComponent, ConfirmationDialogComponent } from 'src/app/modules/shared';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent extends ListComponent<Product> implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'created_at', 'updated_at'];
+  displayedColumns: string[] = ['id', 'name', 'price', 'created_at', 'updated_at'];
   displayedColumnsWithActions: string[];
   isLoading = true;
   form: FormGroup;
@@ -26,7 +26,8 @@ export class ProductListComponent extends ListComponent<Product> implements OnIn
   ) {
     super();
     this.form = this.fb.group({
-      name: [''],
+      name: ['', [Validators.required]],
+      price: ['', [Validators.required, Validators.min(0)]],
     });
     this.displayedColumnsWithActions = [...this.displayedColumns, 'actions'];
   }

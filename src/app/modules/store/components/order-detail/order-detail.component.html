@@ -1,0 +1,48 @@
+<mat-expansion-panel [expanded]="true" class="mat-elevation-z2">
+  <mat-expansion-panel-header>
+    <mat-panel-title> Chi tiết đơn hàng của {{ order.customerName }} </mat-panel-title>
+  </mat-expansion-panel-header>
+  <ng-container *ngTemplateOutlet="table; context: { showHeader: true, dataSource: order.order_items }"></ng-container>
+  <mat-action-row>
+    <button mat-button color="secondary">Tui, xác nhận đơn hàng này</button>
+  </mat-action-row>
+</mat-expansion-panel>
+<ng-template #table let-showHeader="showHeader" let-dataSource="dataSource">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      <td mat-footer-cell *matFooterCellDef>Tổng</td>
+    </ng-container>
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef>Số lượng</th>
+      <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+      <td mat-footer-cell *matFooterCellDef>{{ getTotalQuantity(element) }}</td>
+    </ng-container>
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Đơn giá</th>
+      <td mat-cell *matCellDef="let element">{{ element?.product?.price }}</td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef>Thành Tiền</th>
+      <td mat-cell *matCellDef="let element">{{ element?.product?.price * element.quantity }}</td>
+      <td mat-footer-cell *matFooterCellDef><b>{{ getTotal() }}</b></td>
+    </ng-container>
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef>Tên hàng</th>
+      <td mat-cell *matCellDef="let element">{{ element?.product?.name }}</td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element"></td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+    <ng-container *ngIf="showHeader">
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsWithActions"></tr>
+    </ng-container>
+    <tr mat-row *matRowDef="let element; columns: displayedColumnsWithActions"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumnsWithActions"></tr>
+  </table>
+</ng-template>

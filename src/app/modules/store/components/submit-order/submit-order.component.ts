@@ -66,4 +66,9 @@ export class SubmitOrderComponent {
       this.isOrderPlaced = true;
     })
   }
+
+  resetForm() {
+    this.forms.reset({});
+    this.isOrderPlaced = false;
+  }
 }

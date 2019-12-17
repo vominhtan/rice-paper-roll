@@ -7,9 +7,10 @@ import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OrderListComponent } from './components/order-list/order-list.component';
 import { SubmitOrderComponent } from './components/submit-order/submit-order.component';
+import { OrderDetailComponent } from './components/order-detail/order-detail.component';
 
 @NgModule({
-  declarations: [StoreMainViewComponent, ProductListComponent, OrderListComponent, SubmitOrderComponent],
+  declarations: [StoreMainViewComponent, ProductListComponent, OrderListComponent, SubmitOrderComponent, OrderDetailComponent],
   imports: [ReactiveFormsModule, SharedModule, StoreRoutingModule, CommonModule],
 })
 export class StoreModule {}

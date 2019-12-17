@@ -8,6 +8,10 @@ import * as _ from 'lodash';
 import { Order } from '../../model/order.model';
 import { OrderService } from '../../services/order.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Product } from '../../model/product.model';
+import { OrderItem } from '../../model/order-item.model';
+
+type ProductTotal = [Product, number];
 
 @Component({
   selector: 'rpr-order-list',
@@ -27,6 +31,7 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
   isLoading = true;
   form: FormGroup;
   expandedElement: Order | null;
+  productTotals: ProductTotal[] = [];
 
   constructor(
     private snackBar: MatSnackBar,
@@ -66,8 +71,19 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
       });
   }
 
-  itemClick(element: Order) {
-    this.selectedIndex = _.findIndex(this.items, { id: element.id });
+  private getAllProduct(): [Product, number][] {
+    return Object.values(_.reduce(_.flatMap(this.items, (item: Order) => {
+      return _.map(item.order_items, (orderItem: OrderItem) => {
+        return [orderItem.product, orderItem.quantity];
+      });
+    }), (all: {[key: string]: [Product, number]}, [product, quantity]: [Product, number]) => {
+      if (all[product.id]) {
+        all[product.id][1] = all[product.id][1] + quantity;
+      } else {
+        all[product.id] = [product, quantity];
+      }
+      return all;
+    }, {}));
   }
 
   addNewItem() {
@@ -77,7 +93,7 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
 
   refreshData() {
     this.orderService
-      .fetch()
+      .fetch('order_items')
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -85,6 +101,7 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
       )
       .subscribe((orders: Order[]) => {
         this.items = orders;
+        this.productTotals = this.getAllProduct();
       });
   }
 
