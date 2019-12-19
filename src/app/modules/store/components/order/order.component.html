@@ -1,0 +1,32 @@
+<div class="main-order">
+  <ng-container *ngIf="order; else doHaveOrder">
+    <rpr-submit-order [order]="order" [isModify]="isModify"></rpr-submit-order>
+    <!-- <div class="loading-indicator">
+      <mat-progress-spinner class="loading-indicator" [color]="'primary'" [mode]="'indeterminate'">
+      </mat-progress-spinner>
+    </div> -->
+  </ng-container>
+  <ng-template #doHaveOrder>
+    <mat-card class="rpr-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>Shiba Inu</mat-card-title>
+        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu" />
+      <mat-card-content>
+        <mat-form-field class="order-number" [formGroup]="form">
+          <input matInput placeholder="Mã đơn hàng" formControlName="orderNumber" />
+          <span matPrefix>#&nbsp;</span>
+        </mat-form-field>
+        <p><i>Mấy bợn vui lòng nhập mã đơn hàng chung vào ô phía trên</i></p>
+        <br />
+        <button mat-stroked-button color="secondary" *ngIf="form.valid" (click)="goToOrder()">Okay, shop thôi</button>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="createNewOrder()"><i>Không có mã, tạo đơn hàng nhóm mới</i></button>
+        <button mat-button (click)="goToManage()"><i>Vào trang quản lý</i></button>
+      </mat-card-actions>
+    </mat-card>
+  </ng-template>
+</div>

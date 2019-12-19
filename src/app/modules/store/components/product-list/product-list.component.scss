@@ -19,3 +19,12 @@ table {
 .list-product {
   padding: 10px 10px 0 10px;
 }
+
+:host ::ng-deep {
+  .list-product {
+    .mat-expansion-panel-body {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}

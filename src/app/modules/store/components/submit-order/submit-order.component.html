@@ -1,7 +1,10 @@
 <ng-container *ngIf="isOrderPlaced; else stepperForm">
   <div class="order-create-sucess">
     <p>Bác hạc đại phú đã nhật được đơn hàng, Ông giáo ạ! Ông vui lòn g đợi trông giây lát. Tui sẽ ship tới ngay!</p>
-    <p><span>Wei! Trong trường hợp muốn order thêm nhấn vào đây nha => </span><button mat-button color="secondary" (click)="resetForm();">Tui muốn đặt món mới</button></p>
+    <p>
+      <span>Wei! Trong trường hợp muốn order thêm nhấn vào đây nha 👉 </span
+      ><button mat-button color="secondary" (click)="resetForm()">Tui muốn đặt món mới</button>
+    </p>
   </div>
 </ng-container>
 
@@ -22,7 +25,6 @@
               <mat-card-subtitle>{{ customerLevel }}</mat-card-subtitle>
             </mat-card-header>
           </ng-template>
-
           <img
             mat-card-image
             src="https://material.angular.io/assets/img/examples/shiba2.jpg"
@@ -30,7 +32,7 @@
           />
           <mat-card-content>
             <div class="form-card" [formGroup]="forms.get('0')">
-              <ng-template matStepLabel>Người có tên dưới đây chuẩn bị đặt hàng</ng-template>
+              <ng-template matStepLabel>Khách hàng</ng-template>
               <mat-form-field>
                 <input matInput placeholder="Ai đó gọi tui là" formControlName="customerName" required />
               </mat-form-field>
@@ -45,26 +47,33 @@
     <mat-step [stepControl]="forms.get('1')">
       <div class="step-container" [formGroup]="forms.get('1')">
         <mat-card class="order-card mat-elevation-z8">
+          <img
+            mat-card-image
+            src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+            alt="Photo of a Shiba Inu"
+          />
           <ng-template matStepLabel>{{
             ['Chi tiết đơn hàng của', forms.get('0.customerName').value || 'tui'].join(' ')
           }}</ng-template>
-          <div class="form-card">
-            <mat-form-field>
-              <mat-label>Tui muốn mua</mat-label>
-              <mat-select formControlName="product" required>
-                <mat-option *ngFor="let product of products" [value]="product">
-                  {{ product.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field>
-              <input matInput type="number" placeholder="Với số lượng" formControlName="quantity" required />
-            </mat-form-field>
-          </div>
-          <div>
+          <mat-card-content>
+            <div class="form-card">
+              <mat-form-field>
+                <mat-label>Tui muốn mua</mat-label>
+                <mat-select formControlName="product" required>
+                  <mat-option *ngFor="let product of products" [value]="product">
+                    {{ product.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="number" placeholder="Với số lượng" formControlName="quantity" required />
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
             <button mat-button matStepperPrevious>Quay lại</button>
             <button mat-button matStepperNext>Next</button>
-          </div>
+          </mat-card-actions>
         </mat-card>
       </div>
     </mat-step>
@@ -72,6 +81,11 @@
       <ng-template matStepLabel>Xong</ng-template>
       <div class="step-container">
         <mat-card class="order-card mat-elevation-z8">
+          <img
+            mat-card-image
+            src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+            alt="Photo of a Shiba Inu"
+          />
           <mat-card-content>
             {{
               [forms.get('0.customerName').value, 'ơi!!! Sắp xong rồi, nhấn nút này nữa để đặt hàng nha!!!'].join(' ')

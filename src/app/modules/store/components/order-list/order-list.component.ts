@@ -8,10 +8,15 @@ import * as _ from 'lodash';
 import { Order } from '../../model/order.model';
 import { OrderService } from '../../services/order.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Product } from '../../model/product.model';
-import { OrderItem } from '../../model/order-item.model';
+import { ProductTotalService } from '../../services/product-total.service';
+import { Status } from '../../model/base.model';
 
-type ProductTotal = [Product, number];
+const IconDictionary: { [key in Status]: string } = {
+  ACTIVE: '💡',
+  ARCHIVED: '📦',
+  INACTIVE: '💤',
+  MARK_FOR_DELETE: '🗑️',
+};
 
 @Component({
   selector: 'rpr-order-list',
@@ -19,11 +24,12 @@ type ProductTotal = [Product, number];
   styleUrls: ['./order-list.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  providers: [ProductTotalService],
 })
 export class OrderListComponent extends ListComponent<Order> implements OnInit {
   displayedColumns: string[] = ['id', 'customerName', 'created_at', 'updated_at'];
@@ -31,13 +37,13 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
   isLoading = true;
   form: FormGroup;
   expandedElement: Order | null;
-  productTotals: ProductTotal[] = [];
 
   constructor(
     private snackBar: MatSnackBar,
     private orderService: OrderService,
     private fb: FormBuilder,
     private dialog: MatDialog,
+    public productTotalSrv: ProductTotalService,
   ) {
     super();
     this.form = this.fb.group({
@@ -71,21 +77,6 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
       });
   }
 
-  private getAllProduct(): [Product, number][] {
-    return Object.values(_.reduce(_.flatMap(this.items, (item: Order) => {
-      return _.map(item.order_items, (orderItem: OrderItem) => {
-        return [orderItem.product, orderItem.quantity];
-      });
-    }), (all: {[key: string]: [Product, number]}, [product, quantity]: [Product, number]) => {
-      if (all[product.id]) {
-        all[product.id][1] = all[product.id][1] + quantity;
-      } else {
-        all[product.id] = [product, quantity];
-      }
-      return all;
-    }, {}));
-  }
-
   addNewItem() {
     this.form.reset({});
     super.addNewItem();
@@ -101,12 +92,12 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
       )
       .subscribe((orders: Order[]) => {
         this.items = orders;
-        this.productTotals = this.getAllProduct();
+        this.productTotalSrv.orders = orders;
       });
   }
 
   save() {
-    this.orderService.add(this.form.value).subscribe(() => { });
+    this.orderService.add(this.form.value).subscribe(() => {});
     this.standBy();
   }
 
@@ -121,8 +112,12 @@ export class OrderListComponent extends ListComponent<Order> implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.orderService.delete(result).subscribe(() => { });
+        this.orderService.delete(result).subscribe(() => {});
       }
     });
+  }
+
+  getIcon(status: Status): string {
+    return IconDictionary[status];
   }
 }

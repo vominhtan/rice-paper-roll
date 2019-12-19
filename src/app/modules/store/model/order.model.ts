@@ -1,7 +1,13 @@
 import { BaseRecord } from './base.model';
 import { OrderItem } from './order-item.model';
 
-export interface Order extends BaseRecord {
+export enum OrderType {
+  GROUP = 'GROUP',
+  INDIVIDUAL = 'INDIVIDUAL',
+}
+
+export interface Order extends BaseRecord<OrderType> {
   customerName: string;
-  order_items?: OrderItem;
+  number: string;
+  order_items?: OrderItem[];
 }

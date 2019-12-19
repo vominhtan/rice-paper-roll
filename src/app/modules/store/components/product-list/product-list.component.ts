@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
+import { Status } from '../../model/base.model';
 
 @Component({
   selector: 'rpr-product-list',
@@ -28,6 +29,7 @@ export class ProductListComponent extends ListComponent<Product> implements OnIn
     this.form = this.fb.group({
       name: ['', [Validators.required]],
       price: ['', [Validators.required, Validators.min(0)]],
+      status: [Status.ACTIVE, [Validators.required]],
     });
     this.displayedColumnsWithActions = [...this.displayedColumns, 'actions'];
   }
@@ -57,7 +59,9 @@ export class ProductListComponent extends ListComponent<Product> implements OnIn
   }
 
   addNewItem() {
-    this.form.reset({});
+    this.form.reset({
+      status: Status.ACTIVE,
+    });
     super.addNewItem();
   }
 

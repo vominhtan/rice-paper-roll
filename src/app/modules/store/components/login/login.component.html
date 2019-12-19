@@ -1,0 +1,19 @@
+<div class="login-page">
+  <mat-card class="login-card mat-elevation-z8">
+    <mat-card-header>
+      <mat-card-subtitle>Hình ảnh chỉ mang tính chất minh họa</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu" />
+    <mat-card-content>
+      <div class="form-card" [formGroup]="form">
+        <mat-form-field class="password-field">
+          <input type="password" matInput placeholder="Mật khẩu của bạn" formControlName="password" required />
+          <span matPrefix>🔑&nbsp;</span>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button [disabled]="form.invalid" (click)="login()">Vừng ơi mở ra</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
