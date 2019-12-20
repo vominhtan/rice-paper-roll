@@ -10,9 +10,19 @@ import { SubmitOrderComponent } from './components/submit-order/submit-order.com
 import { OrderDetailComponent } from './components/order-detail/order-detail.component';
 import { OrderComponent } from './components/order/order.component';
 import { LoginComponent } from './components/login/login.component';
+import { NotificationPanelComponent } from './components/notification-panel/notification-panel.component';
 
 @NgModule({
-  declarations: [StoreMainViewComponent, ProductListComponent, OrderListComponent, SubmitOrderComponent, OrderDetailComponent, OrderComponent, LoginComponent],
+  declarations: [
+    StoreMainViewComponent,
+    ProductListComponent,
+    OrderListComponent,
+    SubmitOrderComponent,
+    OrderDetailComponent,
+    OrderComponent,
+    LoginComponent,
+    NotificationPanelComponent,
+  ],
   imports: [ReactiveFormsModule, SharedModule, StoreRoutingModule, CommonModule],
 })
 export class StoreModule {}

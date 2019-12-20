@@ -25,3 +25,16 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+## VAPID Keys
+
+=======================================
+
+Public Key:
+BF-jqXGZ4Ylkr8rdFieuqyF8n3uXhG8MEEdiYd5ApYs0jO499JEFSp8Id6wNX3HuZH4zaMpSbJFc1XUZAAbsKrk
+
+Private Key:
+10qST9QTEIJ9e1nwtrwO57HffMyoLCyloSwf2zq80ns
+
+=======================================

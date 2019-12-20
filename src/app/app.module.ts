@@ -1,11 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { AngularFireModule } from '@angular/fire';
 import { NgModule } from '@angular/core';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './modules/shared/shared.module';
 import { NgJexiaModule, DataOperationsModule } from './modules/jexia';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -17,11 +21,12 @@ import { NgJexiaModule, DataOperationsModule } from './modules/jexia';
     SharedModule,
     BrowserAnimationsModule,
     NgJexiaModule.initialize({
-      projectID: '0c46f5a7-ffe6-4052-8ed5-faadabdb1e49',
-      key: '04d8a4f8-df93-4d3b-b186-07a7671a5a08',
-      secret: '4u2MGaBhVjLbhBXRhZkhGdu4f1XuNWbTNQeyyNFBDTIAxaHsrugjp2VF6ewlB9EiIRSLn8Wsf3i4Wjoo1vsqrg==',
+      ...environment.jexia,
       providers: [DataOperationsModule],
     }),
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireMessagingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

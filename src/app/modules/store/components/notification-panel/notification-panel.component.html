@@ -1,0 +1,12 @@
+<button mat-button (click)="submitNotification()">
+  Notify me
+</button>
+<button mat-button (click)="requestPermission()">
+  Notify NgFire
+</button>
+<p *ngIf="isGranted" class="success">
+  Notifications were granted by the user
+</p>
+<p *ngIf="!isEnabled" class="error">
+  Notifications are not available in the browser or enabled in the application
+</p>
