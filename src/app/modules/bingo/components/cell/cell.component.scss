@@ -1,0 +1,18 @@
+.cell-number {
+  width: 40px;
+  height: 40px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+
+  &.has-value {
+    cursor: pointer;
+    border: 1px solid wheat;
+    &.checked {
+      color: white;
+      background-color: #ff9800;
+      font-weight: bolder;
+    }
+  }
+}

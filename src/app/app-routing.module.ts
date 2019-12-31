@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'store',
+    redirectTo: 'bingo',
   },
   {
     path: 'landing',
@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'store',
     loadChildren: () => import('./modules/store/store.module').then(m => m.StoreModule),
+  },
+  {
+    path: 'bingo',
+    loadChildren: () => import('./modules/bingo/bingo.module').then(m => m.BingoModule),
   },
 ];
 
