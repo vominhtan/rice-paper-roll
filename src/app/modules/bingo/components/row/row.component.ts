@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Cell } from '../../core/bingo.game';
 
 @Component({
   selector: RowComponent.selector,
@@ -9,11 +10,14 @@ export class RowComponent {
 
   static readonly selector = 'rpr-row';
 
-  @Input() row: number[];
+  @Input() row: Cell[];
+  @Input() isBingoRow = false;
+  @Input() enable = true;
+  @Output() cellClick: EventEmitter<any> = new EventEmitter();
 
-  constructor() {}
+  constructor() { }
 
-  cellCheck(index: number, cellNumber: number, checked: boolean) {
-    console.log(arguments);
+  cellCheck(index: number) {
+    this.cellClick.emit(index);
   }
 }

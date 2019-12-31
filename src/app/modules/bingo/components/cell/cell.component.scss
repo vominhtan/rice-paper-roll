@@ -1,18 +1,25 @@
 .cell-number {
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   display: table-cell;
   text-align: center;
   vertical-align: middle;
   user-select: none;
 
   &.has-value {
-    cursor: pointer;
     border: 1px solid wheat;
-    &.checked {
+
+    &.CHECKED {
       color: white;
       background-color: #ff9800;
       font-weight: bolder;
+    }
+
+    &.enable {
+      &:hover {
+        background-color: #ff990091;
+      }
+      cursor: pointer;
     }
   }
 }

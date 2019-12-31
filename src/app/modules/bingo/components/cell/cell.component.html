@@ -1,1 +1,1 @@
-<div class="cell-number" [class.checked]="checked" [class.has-value]="cellNumber"  (click)=toggle()>{{cellNumber}}</div>
+<div [ngClass]="['cell-number', status]" [class.has-value]="cellNumber" [class.enable]="enable">{{cellNumber}}</div>

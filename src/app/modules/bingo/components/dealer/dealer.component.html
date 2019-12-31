@@ -1,6 +1,8 @@
 <table>
   <tbody>
-    <rpr-row *ngFor="let row of bg.board" [row]="row"></rpr-row>
+    <rpr-row *ngFor="let row of game.boardState; let i = index;" [row]="row" (cellClick)="game.check(i, $event)" [isBingoRow]="game.bingoRowIdx === i" [enable]="isGameInprogress"></rpr-row>
+    <rpr-control [game]="game"></rpr-control>
   </tbody>
 </table>
+
 

@@ -1,3 +1,8 @@
-<div class="number-row">
-  <rpr-cell *ngFor="let cellNumber of row; let i = index;" [cellNumber]="cellNumber" (check)='cellCheck(i, cellNumber, $event)'></rpr-cell>
+<div class="number-row" [class.bingo]="isBingoRow">
+  <rpr-cell *ngFor="let cell of row; let i = index;"
+    [cellNumber]="cell.value"
+    (click)='cellCheck(i)'
+    [status]="cell.status"
+    [enable]="enable"
+  ></rpr-cell>
 </div>
