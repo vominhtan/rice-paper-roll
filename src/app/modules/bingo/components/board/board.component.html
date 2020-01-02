@@ -1,0 +1,20 @@
+<table>
+  <tbody>
+    <tr class="number-row" [class.bingo]="game.bingoRowIdx === i" *ngFor="let row of game.boardState; let i = index">
+      <td *ngFor="let cell of row; let j = index">
+        <rpr-cell
+          [cellNumber]="cell.value"
+          (click)="game.check(i, j)"
+          [status]="cell.status"
+        ></rpr-cell>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="9">
+        <rpr-control [game]="game"></rpr-control>
+      </td>
+    </tr>
+  </tfoot>
+</table>

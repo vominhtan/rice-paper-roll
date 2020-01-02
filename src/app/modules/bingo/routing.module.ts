@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'dealer',
+    redirectTo: 'player',
   },
   {
     path: 'dealer',

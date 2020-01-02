@@ -1,5 +1,0 @@
-<tr class="number-row" [class.bingo]="isBingoRow">
-  <td *ngFor="let cell of row; let i = index;">
-    <rpr-cell [cellNumber]="cell.value" (click)='cellCheck(i)' [status]="cell.status" [enable]="enable"></rpr-cell>
-  </td>
-</tr>

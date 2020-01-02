@@ -1,7 +1,3 @@
-<table>
-  <tbody>
-    <rpr-row *ngFor="let row of game.boardState; let i = index;" [row]="row" (cellClick)="game.check(i, $event)"
-      [isBingoRow]="game.bingoRowIdx === i" [enable]="isGameInprogress"></rpr-row>
-    <rpr-control [game]="game"></rpr-control>
-  </tbody>
-</table>
+<div class="player-component">
+  <rpr-board [game]="game$ | async"></rpr-board>
+</div>

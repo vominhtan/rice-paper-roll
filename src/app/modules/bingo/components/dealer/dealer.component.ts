@@ -1,35 +1,61 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Subscription, Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { switchMap, filter, map } from 'rxjs/operators';
+
 import { BingoGame, GameStatus, Dealer } from '../../core/bingo.game';
-import { Subscription } from 'rxjs';
 @Component({
   selector: DealerComponent.selector,
   templateUrl: './dealer.component.html',
   styleUrls: ['./dealer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DealerComponent implements OnInit {
   static readonly selector = 'rpr-dealer';
-  game: BingoGame;
-  dealer: Dealer;
+  dealerSubject: Subject<Dealer> = new BehaviorSubject(null);
+  gameSubject: Subject<BingoGame> = new BehaviorSubject(null);
   dealerSubscription: Subscription;
+  dealer$: Observable<Dealer>;
+  game$: Observable<BingoGame>;
+  isGameInProgress$: Observable<boolean>;
+  items: Observable<any[]>;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private db: AngularFirestore) {
+    this.items = db.collection('items').valueChanges();
+  }
 
   ngOnInit() {
-    this.game = new BingoGame();
-    this.game.onChanged.subscribe(this.cdr.detectChanges.bind(this.cdr));
+    this.dealer$ = this.dealerSubject.asObservable();
+    this.game$ = this.gameSubject.asObservable();
+
+    this.isGameInProgress$ = this.game$.pipe(
+      filter(game => game !== null),
+      switchMap(game => game.onStatusChanged),
+      map(gameStatus => gameStatus !== GameStatus.END),
+    );
+
+    combineLatest(this.dealer$, this.game$)
+      .pipe(
+        filter(([dealer, game]) => {
+          return dealer !== null && game !== null;
+        }),
+      )
+      .subscribe(([dealer, game]) => {
+        if (this.dealerSubscription) {
+          this.dealerSubscription.unsubscribe();
+        }
+        this.dealerSubscription = dealer.onExposedNumber.subscribe(game.checkByNumber.bind(game));
+      });
+
     this.initDealer();
+    this.initGame();
+  }
+
+  initGame() {
+    const game = new BingoGame();
+    this.gameSubject.next(game);
   }
 
   initDealer() {
-    if (this.dealerSubscription) {
-      this.dealerSubscription.unsubscribe();
-    }
-    this.dealer = new Dealer();
-    this.dealerSubscription = this.dealer.onExposedNumber.subscribe(this.game.checkByNumber.bind(this.game));
-  }
-
-  get isGameInprogress(): boolean {
-    return this.game.gameStatus !== GameStatus.END;
+    this.dealerSubject.next(new Dealer());
   }
 }

@@ -1,4 +1,5 @@
 <div class="dealer-component">
-    <rpr-player [game]="game"></rpr-player>
-    <rpr-drawer [dealer]="dealer" (restartDealer)="initDealer()"></rpr-drawer>
+    <rpr-board [game]="game$ | async"></rpr-board>
+    <rpr-drawer [dealer$]="dealer$" (restartDealer)="initDealer()"></rpr-drawer>
 </div>
+{{items | async | json}}

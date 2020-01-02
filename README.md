@@ -1,4 +1,4 @@
-npm run serve:dev
+npm run start:dev
 
 ## VAPID Keys
 
