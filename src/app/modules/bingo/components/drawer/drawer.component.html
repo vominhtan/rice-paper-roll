@@ -1,0 +1,29 @@
+<table>
+    <thead>
+        <tr>
+            <th colspan="3" (click)="random()" class="random base-button">Random</th>
+            <th colspan="2" class="pause base-button">Pause</th>
+            <th colspan="2" class="pause base-button">Auto</th>
+            <th colspan="3" (click)="restart()" class="restart base-button">Restart</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr *ngFor="let row of dealerExposedNumbers">
+            <td *ngFor="let number of row">
+                <rpr-cell [cellNumber]="number"></rpr-cell>
+            </td>
+        </tr>
+    </tbody>
+</table>

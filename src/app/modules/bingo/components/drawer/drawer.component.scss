@@ -1,0 +1,28 @@
+@import '../../style.scss';
+
+.flex-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.exposed-numbers {
+    @extend .flex-container;
+    width: 500px;
+}
+
+.base-button {
+    height: 48px;
+    font-weight: bold;
+    &.random {
+    
+    }
+}
+
+table {
+    > tbody {
+        border-spacing: initial;    
+    }
+}
+
+

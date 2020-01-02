@@ -9,9 +9,9 @@ import { CellStatus } from '../../core/bingo.game';
 export class CellComponent {
 
   static readonly selector = 'rpr-cell';
-  @Input() cellNumber: number;
-  @Input() status: CellStatus;
-  @Input() enable: true;
+  @Input() cellNumber = 0;
+  @Input() status: CellStatus = CellStatus.DISABLE;
+  @Input() enable = false;
 
   constructor() { }
 }

@@ -1,3 +1,5 @@
+@import "../../style.scss";
+
 .control-bar {
     display: flex;
     margin-top: 50px;
@@ -5,15 +7,9 @@
 }
 
 .control-button {
-    padding: 0px 9px;
+    @extend .base-button;
     width: 129px;
     height: 46px;
     display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-    user-select: none;
-    border: 1px solid wheat;
-    background: #607d8b;
-    cursor: pointer;
 }
   

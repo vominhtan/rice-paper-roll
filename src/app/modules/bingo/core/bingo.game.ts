@@ -1,5 +1,6 @@
 
 import * as _ from 'lodash';
+import { Observable, Subject } from 'rxjs';
 
 export enum GameStatus {
     END = 'END',
@@ -24,6 +25,8 @@ interface Props {
     };
 }
 export class BingoGame {
+
+    private changedSubject: Subject<any> = new Subject();
 
     props: Props = {
         boardMap: [],
@@ -54,6 +57,10 @@ export class BingoGame {
         return this.props.gameState.status;
     }
 
+    get onChanged(): Observable<any> {
+        return this.changedSubject.asObservable();
+    }
+
     constructor(initialBoard?: number[][]) {
         this.init(initialBoard);
     }
@@ -64,13 +71,6 @@ export class BingoGame {
 
     private initBoardMap(from: number = 1, to: number = 90, sets: number = 9, of: number = 5): number[][] {
         const allNumbers = fill(from, to);
-
-        function fill(fromA: number, toB: number, array: number[] = []): number[] {
-            for (let i = fromA; i <= toB; i++) {
-                array.push(i);
-            }
-            return array;
-        }
 
         function shuffle(array) {
             let currentIndex = array.length;
@@ -151,20 +151,38 @@ export class BingoGame {
         this.props.gameState.status = GameStatus.INPROGRESS;
     }
 
-    public check(rowIdx: number, columnIdx: number) {
+    private getCellByNumber(ball: number): Cell {
+        return _.chain(this.boardState)
+            .flatten()
+            .find(['value', ball])
+            .value();
+    }
+
+    public checkByNumber(ball: number) {
+        const cell = this.getCellByNumber(ball);
+        if (cell) {
+            this.changeCellStatus(cell, CellStatus.CHECKED);
+        }
+    }
+
+    public check(rowIdx: number, columnIdx: number, status?: CellStatus) {
         if (this.props.gameState.status === GameStatus.END) { return; }
         const row = this.boardState[rowIdx];
         const cell = row[columnIdx];
         if (cell.value) {
             this.changeCellStatus(cell);
-            if (this.isBingoRow(row)) {
-                this.bingoRowFound(rowIdx);
-            }
         }
     }
 
     public restart() {
         this.createBoardState();
+    }
+
+    private findBingoRow() {
+        const index = this.boardState.findIndex(row => this.isBingoRow(row));
+        if (index >= 0) {
+            this.bingoRowFound(index);
+        }
     }
 
     private bingoRowFound(index) {
@@ -176,16 +194,75 @@ export class BingoGame {
         return !_.find(row, ['status', CellStatus.UNCHECKED]);
     }
 
-    private changeCellStatus(cell: Cell) {
-        switch (cell.status) {
-            case CellStatus.CHECKED:
-                cell.status = CellStatus.UNCHECKED;
-                return;
-            case CellStatus.UNCHECKED:
-                cell.status = CellStatus.CHECKED;
-                return;
-            default:
-                return;
+    private changeCellStatus(cell: Cell, status?: CellStatus) {
+        if (status) {
+            cell.status = status;
+            this.findBingoRow();
+            this.changedSubject.next();
+        } else {
+            switch (cell.status) {
+                case CellStatus.CHECKED:
+                    cell.status = CellStatus.UNCHECKED;
+                    this.findBingoRow();
+                    this.changedSubject.next();
+                    break;
+                case CellStatus.UNCHECKED:
+                    cell.status = CellStatus.CHECKED;
+                    this.findBingoRow();
+                    this.changedSubject.next();
+                    break;
+                default:
+                    break;
+            }
         }
     }
+}
+
+
+interface DrawerState {
+    exposedNumbers: number[];
+    numbersPoll: number[];
+}
+
+export class Dealer {
+
+    private static readonly defaultDrawerState = {
+        exposedNumbers: [],
+        numbersPoll: []
+    };
+
+    private exposedNumberSubject: Subject<number> = new Subject();
+
+    drawerState: DrawerState;
+
+    constructor(drawerState: DrawerState = Dealer.defaultDrawerState) {
+        this.drawerState = _.clone(drawerState);
+        fill(1, 90, this.drawerState.numbersPoll);
+    }
+
+    get onExposedNumber(): Observable<number> {
+        return this.exposedNumberSubject.asObservable();
+    }
+
+    private exposeNumber(ball: number) {
+        this.drawerState.exposedNumbers.push(ball);
+        this.exposedNumberSubject.next(ball);
+    }
+
+    randomFromPool() {
+        const idx = _.random(0, this.drawerState.numbersPoll.length - 1);
+        this.exposeNumber(this.drawerState.numbersPoll[idx]);
+        this.drawerState.numbersPoll.splice(idx, 1);
+    }
+
+    restart() {
+
+    }
+}
+
+function fill(fromA: number, toB: number, array: number[] = []): number[] {
+    for (let i = fromA; i <= toB; i++) {
+        array.push(i);
+    }
+    return array;
 }

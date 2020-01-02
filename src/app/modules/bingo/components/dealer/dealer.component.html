@@ -1,8 +1,4 @@
-<table>
-  <tbody>
-    <rpr-row *ngFor="let row of game.boardState; let i = index;" [row]="row" (cellClick)="game.check(i, $event)" [isBingoRow]="game.bingoRowIdx === i" [enable]="isGameInprogress"></rpr-row>
-    <rpr-control [game]="game"></rpr-control>
-  </tbody>
-</table>
-
-
+<div class="dealer-component">
+    <rpr-player [game]="game"></rpr-player>
+    <rpr-drawer [dealer]="dealer" (restartDealer)="initDealer()"></rpr-drawer>
+</div>

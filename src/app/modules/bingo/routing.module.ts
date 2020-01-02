@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DealerComponent } from './components/dealer/dealer.component';
+import { PlayerComponent } from './components/player/player.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,11 @@ const routes: Routes = [
     path: 'dealer',
     pathMatch: 'full',
     component: DealerComponent,
+  },
+  {
+    path: 'player',
+    pathMatch: 'full',
+    component: PlayerComponent,
   },
 ];
 
