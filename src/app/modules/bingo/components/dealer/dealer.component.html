@@ -2,4 +2,4 @@
     <rpr-board [game]="game$ | async"></rpr-board>
     <rpr-drawer [dealer$]="dealer$" (restartDealer)="initDealer()"></rpr-drawer>
 </div>
-{{items | async | json}}
+<!-- <pre>{{(room$ | async)?.messages | json}}</pre> -->

@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from '@angular/fire';
 import { NgModule } from '@angular/core';
-import { AngularFireMessagingModule } from '@angular/fire/messaging';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +9,8 @@ import { SharedModule } from './modules/shared/shared.module';
 import { NgJexiaModule, DataOperationsModule } from './modules/jexia';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { environment } from '../environments/environment';
     }),
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireMessagingModule,
+    AngularFirestoreModule,
+    AngularFireDatabaseModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
