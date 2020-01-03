@@ -1,0 +1,8 @@
+<ng-container *ngIf="room$ | async as room; else loading">
+  <rpr-chat-message *ngFor="let message of roomMessages$ | async" [message]="message"></rpr-chat-message>
+  <rpr-chat-box (sendMessage)="sendMessage($event)"></rpr-chat-box>
+</ng-container>
+<ng-template #loading>
+  <rpr-chat-join-chat-room></rpr-chat-join-chat-room>
+</ng-template>
+

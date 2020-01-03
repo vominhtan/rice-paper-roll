@@ -1,15 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription, Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { switchMap, filter, map, tap, mapTo } from 'rxjs/operators';
+import { switchMap, filter, map } from 'rxjs/operators';
 
 import { BingoGame, GameStatus, Dealer } from '../../core/bingo.game';
-import { ActivatedRoute, Params } from '@angular/router';
 
-interface Room {
-  messages: any[];
-  users: any[];
-}
 @Component({
   selector: DealerComponent.selector,
   templateUrl: './dealer.component.html',
@@ -23,22 +17,8 @@ export class DealerComponent implements OnInit {
   dealer$: Observable<Dealer>;
   game$: Observable<BingoGame>;
   isGameInProgress$: Observable<boolean>;
-  private roomDoc: AngularFirestoreDocument<Room>;
 
-  room$: Observable<Room>;
-
-  constructor(private afs: AngularFirestore, private route: ActivatedRoute) {
-    this.room$ = route.queryParams.pipe(
-      switchMap(
-        (queryParams: Params) => {
-          console.log(queryParams);
-          this.roomDoc = afs.doc<Room>(`rooms/${queryParams.roomId}`);
-          return this.roomDoc.valueChanges();
-        }
-      ),
-      tap(room => console.log(room)),
-    );
-  }
+  constructor() {}
 
   ngOnInit() {
     this.dealer$ = this.dealerSubject.asObservable();
