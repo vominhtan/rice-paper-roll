@@ -1,10 +1,27 @@
-<table cellspacing="0" cellpadding="0" class="board new">
-  <tr *ngFor="let row of game.boardState; let i = index" [class.highlight]="game.bingoRowIdx === i">
-    <td *ngFor="let cell of row; let j = index" [class.selected]="cell.status === 'CHECKED'" (click)="game.check(i, j)">
-      {{cell.value}}
-    </td>
-  </tr>
-</table>
+<div>
+  <table cellspacing="0" cellpadding="0" class="board new">
+    <tbody>
+      <tr *ngFor="let row of game.boardState; let i = index" [class.highlight]="game.bingoRowIdx === i">
+        <td
+          *ngFor="let cell of row; let j = index"
+          [class.selected]="cell.status === 'CHECKED'"
+          [class.cell]="true"
+          (click)="game.check(i, j)"
+        >
+          {{ cell.value }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="board new">
+    <tbody>
+      <tr>
+        <td (click)="game.restart()">|  Reset  |</td>
+        <td (click)="game.init()">|  Reload |</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <!-- <table>
   <tbody>
     <tr class="number-row" [class.bingo]="game.bingoRowIdx === i" *ngFor="let row of game.boardState; let i = index">

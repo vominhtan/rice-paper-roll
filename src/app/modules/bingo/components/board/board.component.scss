@@ -3,8 +3,6 @@
 }
 
 table {
-  float: left;
-
   * {
     user-select: none;
     font-family: 'Montserrat', sans-serif;
@@ -20,7 +18,7 @@ table {
     margin: 5px;
     box-shadow: 2px 6px 10px 0 rgba(0, 0, 0, 0.2), 4px 4px 10px 0 rgba(0, 0, 0, 0.19);
 
-    td {
+    td.cell {
       width: 30px;
       height: 30px;
       padding: 0;

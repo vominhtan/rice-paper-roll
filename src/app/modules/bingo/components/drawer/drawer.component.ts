@@ -31,7 +31,7 @@ export class DrawerComponent implements OnInit {
       switchMap(dealer => dealer.onExposedNumber),
     );
 
-    const interval$ = interval(200).pipe(mapTo(-1));
+    const interval$ = interval(3000).pipe(mapTo(-1));
     const pause$ = this.pauseSubject.asObservable().pipe(mapTo(false));
     const resume$ = this.resumeSubject.asObservable().pipe(mapTo(true));
     const autoStatus$ = merge(pause$, resume$).pipe(startWith(false));
