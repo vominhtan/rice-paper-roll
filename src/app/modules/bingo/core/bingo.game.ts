@@ -187,14 +187,12 @@ export class BingoGame {
 
   private findBingoRow() {
     const index = this.boardState.findIndex(row => this.isBingoRow(row));
-    if (index >= 0) {
-      this.bingoRowFound(index);
-    }
+    this.bingoRowFound(index);
   }
 
   private bingoRowFound(index) {
     this.props.gameState.bingoRowIndex = index;
-    this.props.gameState.status = GameStatus.END;
+    this.props.gameState.status = index < 0 ? GameStatus.INPROGRESS : GameStatus.END;
   }
 
   private isBingoRow(row: Cell[]) {
