@@ -28,29 +28,44 @@ export class ChatRoomComponent implements OnInit {
   }
 
   constructor(private afs: AngularFirestore, private route: ActivatedRoute) {
-    this.room$ = route.queryParams.pipe(
+    this.listenRoomChange();
+    this.listenRoomMessages();
+    this.listenUserChange();
+    this.handleSendMessage();
+  }
+
+  ngOnInit() {}
+
+  private listenRoomChange() {
+    this.room$ = this.route.queryParams.pipe(
       switchMap((queryParams: Params) => {
-        this.roomDoc = afs.doc<Room>(`rooms/${queryParams.roomId}`);
+        this.roomDoc = this.afs.doc<Room>(`rooms/${queryParams.roomId}`);
         return this.roomDoc.valueChanges();
       }),
       filter(room => room !== null && room !== undefined),
     );
+  }
 
-    this.roomMessages$ = route.queryParams.pipe(
+  private listenRoomMessages() {
+    this.roomMessages$ = this.route.queryParams.pipe(
       switchMap((queryParams: Params) => {
-        this.roomMessageCollection = afs.collection(`rooms/${queryParams.roomId}/messages`);
+        this.roomMessageCollection = this.afs.collection(`rooms/${queryParams.roomId}/messages`);
         return this.roomMessageCollection.valueChanges(({idField: 'id'}));
       }),
       tap(value => console.log(value)),
     );
+  }
 
-    this.user$ = route.queryParams.pipe(
+  private listenUserChange() {
+    this.user$ = this.route.queryParams.pipe(
       switchMap((queryParams: Params) => {
-        this.userDoc = afs.doc<User>(`users/${queryParams.username}`);
+        this.userDoc = this.afs.doc<User>(`users/${queryParams.userId}`);
         return this.userDoc.valueChanges();
       }),
     );
+  }
 
+  private handleSendMessage() {
     combineLatest(this.room$, this.user$)
       .pipe(
         filter(([room, user]: [Room, User]) => room !== null && user !== null),
@@ -74,8 +89,6 @@ export class ChatRoomComponent implements OnInit {
         console.log(messageRef);
       });
   }
-
-  ngOnInit() {}
 
   sendMessage(message: string) {
     this.sendMessageSubject.next(message);

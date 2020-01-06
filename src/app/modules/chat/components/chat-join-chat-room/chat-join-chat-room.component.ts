@@ -29,7 +29,7 @@ export class ChatJoinChatRoomComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   get timestamp() {
     return firebase.firestore.FieldValue.serverTimestamp();
@@ -37,8 +37,14 @@ export class ChatJoinChatRoomComponent implements OnInit {
 
   join() {
     if (this.joinChatRoomFG.valid) {
-      this.createOrUpdateUser(this.joinChatRoomFG.value['username']).subscribe(() => {
-        this.router.navigate(['./'], { queryParams: this.joinChatRoomFG.value });
+      this.createOrUpdateUser(this.joinChatRoomFG.value['username']).subscribe((value) => {
+        console.log(value);
+        this.router.navigate(['./'], {
+          queryParams: {
+            roomId: this.joinChatRoomFG.value.roomId,
+            userId: value.id
+          }
+        });
       });
     }
   }
@@ -57,12 +63,12 @@ export class ChatJoinChatRoomComponent implements OnInit {
         switchMap((users: User[]) => {
           return users && users.length <= 0
             ? from(
-                userCol.doc<User>(id).set({
-                  hashtag: 'player',
-                  username,
-                  id,
-                }),
-              ).pipe(tap(value => console.log(value)))
+              userCol.doc<User>(id).set({
+                hashtag: 'player',
+                username,
+                id,
+              }),
+            ).pipe(tap(value => console.log(value)))
             : of(users[0]);
         }),
       );

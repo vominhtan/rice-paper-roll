@@ -1,7 +1,0 @@
-<ng-container *ngIf="message; else loading">
-  <p>[{{message.createdAt?.seconds}}] | <rpr-chat-user-avatar [userId]="message.user.id"></rpr-chat-user-avatar> | {{message.content}} </p>
-  <br />
-</ng-container>
-<ng-template #loading>
-  Join Chat Room
-</ng-template>

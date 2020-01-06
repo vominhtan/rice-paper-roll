@@ -4,11 +4,13 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '../../models/chat-room';
 
 @Component({
-  selector: 'rpr-chat-user-avatar',
+  selector: ChatUserAvatarComponent.selector,
   templateUrl: './chat-user-avatar.component.html',
   styleUrls: ['./chat-user-avatar.component.scss']
 })
 export class ChatUserAvatarComponent implements OnInit {
+
+  static readonly selector = 'rpr-chat-user-avatar';
 
   @Input() userId: string;
 
