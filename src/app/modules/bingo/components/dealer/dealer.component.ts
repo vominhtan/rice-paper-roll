@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription, Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { switchMap, filter, map } from 'rxjs/operators';
 
 import { BingoGame, GameStatus, Dealer } from '../../core/bingo.game';
+import { ChatRoomComponent } from 'src/app/modules/chat/components/chat-room/chat-room.component';
+import { BoardComponent } from '../board/board.component';
 
 @Component({
   selector: DealerComponent.selector,
@@ -17,6 +19,9 @@ export class DealerComponent implements OnInit {
   dealer$: Observable<Dealer>;
   game$: Observable<BingoGame>;
   isGameInProgress$: Observable<boolean>;
+
+  @ViewChild('chatRoom', {static: true}) chatRoom: ChatRoomComponent;
+  @ViewChild('board', {static: true}) board: BoardComponent;
 
   constructor() {}
 
@@ -40,12 +45,25 @@ export class DealerComponent implements OnInit {
         if (this.dealerSubscription) {
           this.dealerSubscription.unsubscribe();
         }
-        this.dealerSubscription = dealer.onExposedNumber.subscribe(game.checkByNumber.bind(game));
+        this.dealerSubscription = dealer.onExposedNumber.subscribe(number => {
+          this.setMessageToChatRoom(`[${number}]`);
+          this.announceNumber(number);
+          game.checkByNumber(number);
+        });
       });
 
     this.initDealer();
     this.initGame();
   }
+
+  setMessageToChatRoom(message: string) {
+    this.chatRoom.sendMessage(message);
+  }
+
+  announceNumber(number) {
+    this.board.announce(number);
+  }
+
 
   initGame() {
     const game = new BingoGame();

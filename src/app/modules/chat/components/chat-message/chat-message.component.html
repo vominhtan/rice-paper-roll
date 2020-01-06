@@ -1,10 +1,12 @@
 <ng-container *ngIf="message; else loading">
-  <div>
-    <rpr-chat-user-avatar [userId]="message.user.id"></rpr-chat-user-avatar>
-    <span>{{message.createdAt?.seconds * 1000 | secondToDate}}</span>
-  </div>
-  <div>
-    {{message.content}}
+  <div [class.owner]="message.user.id === currentUserId" [ngClass]="'user-' + message.userIndex" >
+    <div *ngIf="!message.hideUserInformation">
+      <rpr-chat-user-avatar [userId]="message.user.id"></rpr-chat-user-avatar>
+      <span class="time">{{ message.createdAt?.seconds * 1000 | secondToDate }}</span>
+    </div>
+    <div [class.message]="true">
+      {{ message.content }}
+    </div>
   </div>
 </ng-container>
 <ng-template #loading>

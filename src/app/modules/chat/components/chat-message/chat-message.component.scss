@@ -1,0 +1,38 @@
+$colors: #f44336, #9e9e9e, #9c27b0, #cddc39, #3f51b5, #ff5722, #795548, #00bcd4, #009688, #4caf50, #ff9800, #673ab7,
+  #ffeb3b, #ffc107, #8bc34a, #2196f3, #e91e63, #03a9f4, #607d8b;
+
+.message-item {
+  margin-right: 4px;
+  margin-bottom: 4px;
+  padding: 4px;
+  border: 1px solid;
+}
+
+@each $color in $colors {
+  $i: index($colors, $color) - 1;
+  .user-#{$i} {
+    border-color: $color;
+
+    &.owner {
+      text-align: right;
+    }
+
+    rpr-chat-user-avatar {
+      border: 1px $color solid;
+      background-color: lighten($color, 5%);
+      display: inline-block;
+      @extend .message-item;
+    }
+
+    span.time {
+      background: #8bc34a;
+      @extend .message-item;
+    }
+
+    .message {
+      @extend .message-item;
+      display: inline-block;
+      border-color: darken($color, 20%);
+    }
+  }
+}

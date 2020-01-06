@@ -1,0 +1,29 @@
+rpr-chat-box {
+  display: block;
+}
+
+.message-list {
+  max-height: 546.5px;
+  min-height: 546.5px;
+  overflow-y: scroll;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #9E9E9E;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2196F3;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #00BCD4;
+}

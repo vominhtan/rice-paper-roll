@@ -1,11 +1,17 @@
 <!-- <nb-chat title="Nebular Conversational UI">
   <rpr-chat-message *ngFor="let message of roomMessages$ | async" [message]="message"></rpr-chat-message>
 </nb-chat> -->
-<ng-container *ngIf="room$ | async as room; else loading">
-  <rpr-chat-message *ngFor="let message of roomMessages$ | async" [message]="message"></rpr-chat-message>
+<ng-container *ngIf="room$ | async as room; else joinChatRoom">
+  <div class="message-list" #messageList>
+    <rpr-chat-message
+      *ngFor="let message of roomMessages"
+      [message]="message"
+      [currentUserId]="(user$ | async)?.id"
+      [userIndex]="userIndex"
+    ></rpr-chat-message>
+  </div>
   <rpr-chat-box (sendMessage)="sendMessage($event)"></rpr-chat-box>
 </ng-container>
-<ng-template #loading>
+<ng-template #joinChatRoom>
   <rpr-chat-join-chat-room></rpr-chat-join-chat-room>
 </ng-template>
-

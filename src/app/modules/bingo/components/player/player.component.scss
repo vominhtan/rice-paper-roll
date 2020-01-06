@@ -3,4 +3,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  > * {
+    // flex: 1;
+  }
+
+  rpr-chat-room {
+    min-width: 400px;
+  }
 }

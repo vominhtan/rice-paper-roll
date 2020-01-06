@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, of, from } from 'rxjs';
 import { User } from '../../models/chat-room';
@@ -22,7 +22,7 @@ export class ChatJoinChatRoomComponent implements OnInit {
 
   joinChatRoomFG: FormGroup;
 
-  constructor(private router: Router, private fb: FormBuilder, private afs: AngularFirestore) {
+  constructor(private router: Router, private fb: FormBuilder, private afs: AngularFirestore, private activatedRoute: ActivatedRoute) {
     this.joinChatRoomFG = fb.group({
       roomId: ['', Validators.required],
       username: ['', Validators.required],
@@ -39,11 +39,13 @@ export class ChatJoinChatRoomComponent implements OnInit {
     if (this.joinChatRoomFG.valid) {
       this.createOrUpdateUser(this.joinChatRoomFG.value['username']).subscribe((value) => {
         console.log(value);
-        this.router.navigate(['./'], {
+        this.router.navigate([], {
           queryParams: {
             roomId: this.joinChatRoomFG.value.roomId,
             userId: value.id
-          }
+          },
+          relativeTo: this.activatedRoute,
+          queryParamsHandling: 'merge',
         });
       });
     }

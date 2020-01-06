@@ -14,13 +14,13 @@ interface CustomeMessage extends Message {
 export class ChatMessageComponent implements OnInit {
 
   @Input() message: CustomeMessage;
+  @Input() userIndex: number;
+  @Input() currentUserId: string;
 
   static readonly selector = 'rpr-chat-message';
   private messageDoc: AngularFirestoreDocument<Message>;
 
-  constructor(private afs: AngularFirestore) {
-
-  }
+  constructor(private afs: AngularFirestore) {}
 
   ngOnInit() {
   }

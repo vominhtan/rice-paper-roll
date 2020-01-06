@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "playground-tanvo",
+  "private_key_id": "92f848102cc178d7ad4ae07ef8ae8854dde41414",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCkPaoy3PBPwtWQ\newvJuo+IF34vW0ObLpsEaeWXSe/SEGGGj+qSfdBfuMDoe0U/Pdyw05D3dNf5r/ys\ncP35MNXd2y4qRiG9fJpnWndxZwLdO5T9GSq2fVWpcPBQ3jdpD3RJwMdAf86w0/iS\nXhe1I7aelulLe1uBvfDuUN+ISZtP9F3Rb7bMFNMlOwR/GHZpy2Ml2CU+7heVEBMZ\no7C2WkGicAWdkyVjipkXMT3EvNYMgHlXouJrm/EPSaU/CbkAzeDW1D55z5XL2BNo\nqzBl1tqasnIfzw0U3UZHeOTPHtVWKnQZy/zyrxLG3x8XyU1DS0n13LS+Tm0CFxoQ\nb/pK3ARLAgMBAAECggEAQGhQSN78vIKu5phiUItBQ0DXQrH7Cq2Vq/7tQs2DZzD2\nVeM1PZpqL0eQGvtQdhMH6y4kgO5Izgl2QJeU+XZtwDF2YqybCaiGEnbXNVkMtf5q\nGHEYn3T6NVbtXwEt4JznYQ7g9InKX+zYY2nTyTzGnl2XAntPMMtwYrzDVDptVkZg\n0IICOk+LFsvnaosEr6CIgybcGO0Bk6bla2z3wHNqUPKZBsXqLjQJYjYvaTMcGWD6\n1S+2jWCcdsLeY7+EdurV3CxxikfybnTRvkusxhcMfD+x5eUyYRXoJhA7Q9wqcStz\npnLCu+MjJxiz3nyjX11Xj5J+c33P/cCiSUtP+sLa/QKBgQDWmiFG/B9JlRXWXrsz\nut/+iNra5ng/YBtN+a3OPfHBvhaKjCs7liGDFrWX4OkMdcZythWEqrjqSuWEr1fW\nUXdZvIiUcxsGAyszLwESzr6jy6E1JDQ22YyjUfeorRCa4OZrT67AVIaqJov7YjqM\nNGOsFNxCw9BOm4+QJX410kFVBQKBgQDD7IG+NNXc2koLGC/i5doGWfgDfaiD/vGF\npVVA4/bbqHm25j71o8WTtLb6lq4RStqOW0hZi0keAx3WLVoT/K0npwAJ9lrJdqKG\nRvfVtGvVxtzcw8DOF0DyIOVLNoGIXSbH7h0gGm+tsqEdHPtGRnRcJJDiCejUeuSs\nOAQO1BY1DwKBgAX6sWaq66w/LSaV6R1d3ZPX+FEVDtClOt2HUWJns260fyhJE4NL\ngY+HeHPM3nFsbqUPkbXqk9BjWdXClO3xwyOK7ztDocMfH3sDmkIN5J3ntIwogBPv\nJ839IKtgdw/5qDHhPHs7X60p+ch9SihR5V0MD78Eea9XAj7/7G5Pd2aJAoGBALQO\nNcpc+jJmtmdtygxnGrB9nG1w3R65fLNLF4d0OZjzQzBwd2n+IYS2Lvcq5TvlI+hy\nQZJxbDfVu2Tq9v6pV2S6mFGPgy3lBkYLEJboobWsdau5hwaf3kLnMnKl2/M7UHmq\n/j9TrFDgeiqsSMzz0NohjLj/TGeBrYgMTsZl6SbHAoGBAIiEg9KLuT3fD0J72xz7\nvgEdsrSn/UwodKf76wlzr0KzH8t4w0O0Sx2uqR3T9sYg+zGRpBsstal1JLdUnXh1\nN0PITd8Vh9MjtAWIMEnuJtJx3G8R3YKgw0MdtyEvLSOekLk+Q/0yustL+DqaCazc\nwgUxKaHZOR/w2XdBYimuingM\n-----END PRIVATE KEY-----\n",
+  "client_email": "testtts@playground-tanvo.iam.gserviceaccount.com",
+  "client_id": "104535867064258055903",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/testtts%40playground-tanvo.iam.gserviceaccount.com"
+}

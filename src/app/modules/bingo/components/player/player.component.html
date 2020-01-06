@@ -1,4 +1,4 @@
 <div class="player-component">
-  <rpr-board [game]="game$ | async"></rpr-board>
-  <rpr-chat-room></rpr-chat-room>
+  <rpr-board #board [game]="game$ | async"></rpr-board>
+  <rpr-chat-room (messageRecieved)="onMessageRecieved($event)"></rpr-chat-room>
 </div>
