@@ -3,8 +3,9 @@
     justify-content: space-evenly;
     flex-wrap: wrap;
 
-    > * {
-      flex: 1;
+    rpr-board {
+      display: flex;
+      justify-content: center;
     }
 
 }

@@ -9,6 +9,7 @@ import { BingoGame, GameStatus } from '../../core/bingo.game';
 })
 export class BoardComponent implements OnInit {
   static readonly selector = 'rpr-board';
+  @Input() theme: string = 'theme-red';
   @Input() game: BingoGame;
   voices: { [key: string]: any } = {};
 

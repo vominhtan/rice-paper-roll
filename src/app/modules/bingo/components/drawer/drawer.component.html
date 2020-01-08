@@ -1,57 +1,40 @@
-<div>
-  <table class="board new">
-    <tbody>
-      <tr>
-        <th (click)="random()">| Random |</th>
-        <th>{{ currentExposed$ | async }}</th>
-        <th *ngIf="autoStatus$ | async" (click)="pause()">| Pause |</th>
-        <th *ngIf="!(autoStatus$ | async)" (click)="resume()">| Auto |</th>
-        <th (click)="restart()">| Restart |</th>
-      </tr>
-    </tbody>
-  </table>
-  <!-- <table cellspacing="0" cellpadding="0" class="board new">
-    <tbody>
-      <tr *ngFor="let row of game.boardState; let i = index" [class.highlight]="game.bingoRowIdx === i">
-        <td
-          *ngFor="let cell of row; let j = index"
-          [class.selected]="cell.status === 'CHECKED'"
-          [class.cell]="true"
-          (click)="game.check(i, j)"
-        >
-          {{ cell.value }}
-        </td>
-      </tr>
-    </tbody>
-  </table> -->
+<div class="flex-component">
+  <div [ngClass]="['wrapper', theme]">
+    <table cellspacing="0" cellpadding="0" class="control">
+      <thead>
+        <tr>
+          <th (click)="random()" colspan="3">| Random |</th>
+          <th *ngIf="autoStatus$ | async" (click)="pause()" colspan="4">| Pause |</th>
+          <th *ngIf="!(autoStatus$ | async)" (click)="resume()" colspan="4">| Auto |</th>
+          <th (click)="restart()" colspan="3">| Restart |</th>
+        </tr>
+        <tr class="divider">
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+    <table cellspacing="0" cellpadding="0" class="game-board">
+      <tbody>
+        <tr *ngFor="let row of dealerExposedNumbers$ | async; let i = index">
+          <td
+            *ngFor="let cell of row; let j = index"
+            [class.selected]="cell"
+            [class.cell]="true"
+            [class.recent]="cell === (currentExposed$ | async) "
+          >
+            {{ cell }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-<!-- <table>
-  <thead>
-    <tr>
-      <th colspan="3" (click)="random()" class="random base-button">Random</th>
-      <th colspan="1">{{ currentExposed$ | async }}</th>
-      <th colspan="3" class="pause base-button" *ngIf="autoStatus$ | async" (click)="pause()">Pause</th>
-      <th colspan="3" class="pause base-button" *ngIf="!(autoStatus$ | async)" (click)="resume()">Auto</th>
-      <th colspan="3" (click)="restart()" class="restart base-button">Restart</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr *ngFor="let row of dealerExposedNumbers$ | async">
-      <td *ngFor="let number of row">
-        <rpr-cell [cellNumber]="number"></rpr-cell>
-      </td>
-    </tr>
-  </tbody>
-</table> -->

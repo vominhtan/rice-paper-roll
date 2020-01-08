@@ -8,6 +8,10 @@ $colors: #f44336, #9e9e9e, #9c27b0, #cddc39, #3f51b5, #ff5722, #795548, #00bcd4,
   border: 1px solid;
 }
 
+.message-wrapper {
+  margin-top: 10px;
+}
+
 @each $color in $colors {
   $i: index($colors, $color) - 1;
   .user-#{$i} {

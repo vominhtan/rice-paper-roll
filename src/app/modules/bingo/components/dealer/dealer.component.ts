@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Subscription, Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { Subscription, Subject, BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
 import { switchMap, filter, map } from 'rxjs/operators';
 
 import { BingoGame, GameStatus, Dealer } from '../../core/bingo.game';
 import { ChatRoomComponent } from 'src/app/modules/chat/components/chat-room/chat-room.component';
 import { BoardComponent } from '../board/board.component';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: DealerComponent.selector,
@@ -19,15 +20,17 @@ export class DealerComponent implements OnInit {
   dealer$: Observable<Dealer>;
   game$: Observable<BingoGame>;
   isGameInProgress$: Observable<boolean>;
+  theme$: Observable<string>;
 
-  @ViewChild('chatRoom', {static: true}) chatRoom: ChatRoomComponent;
-  @ViewChild('board', {static: true}) board: BoardComponent;
+  @ViewChild('chatRoom', { static: true }) chatRoom: ChatRoomComponent;
+  @ViewChild('board', { static: true }) board: BoardComponent;
 
-  constructor() {}
+  constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.dealer$ = this.dealerSubject.asObservable();
     this.game$ = this.gameSubject.asObservable();
+    this.theme$ = of('theme-red');
 
     this.isGameInProgress$ = this.game$.pipe(
       filter(game => game !== null),
@@ -57,13 +60,14 @@ export class DealerComponent implements OnInit {
   }
 
   setMessageToChatRoom(message: string) {
-    this.chatRoom.sendMessage(message);
+    if (this.chatRoom) {
+      this.chatRoom.sendMessage(message);
+    }
   }
 
   announceNumber(number) {
     this.board.announce(number);
   }
-
 
   initGame() {
     const game = new BingoGame();

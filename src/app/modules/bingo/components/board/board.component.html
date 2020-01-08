@@ -1,44 +1,49 @@
-<div>
-  <table cellspacing="0" cellpadding="0" class="board new">
-    <tbody>
-      <tr *ngFor="let row of game.boardState; let i = index" [class.highlight]="game.bingoRowIdx === i">
-        <td
-          *ngFor="let cell of row; let j = index"
-          [class.selected]="cell.status === 'CHECKED'"
-          [class.cell]="true"
-          (click)="game.check(i, j)"
-        >
-          {{ cell.value }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <table class="board new">
-    <tbody>
-      <tr>
-        <td (click)="game.restart()">|  Reset  |</td>
-        <td (click)="game.init()">|  Reload |</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="flex-component">
+  <div [ngClass]="['wrapper', theme]">
+    <table cellspacing="0" cellpadding="0" class="control">
+      <thead>
+        <tr>
+          <th (click)="game.restart()" colspan="3">| Reset |</th>
+          <th colspan="3"></th>
+          <th (click)="game.init()" colspan="3">| Reload |</th>
+        </tr>
+        <tr class="divider">
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+    </table>
+    <table cellspacing="0" cellpadding="0" class="game-board">
+      <tbody>
+        <tr class="divider">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr *ngFor="let row of game.boardState; let i = index" [class.highlight]="game.bingoRowIdx === i">
+          <td
+            *ngFor="let cell of row; let j = index"
+            [class.selected]="cell.status === 'CHECKED'"
+            [class.cell]="true"
+            (click)="game.check(i, j)"
+          >
+            {{ cell.value }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-<!-- <table>
-  <tbody>
-    <tr class="number-row" [class.bingo]="game.bingoRowIdx === i" *ngFor="let row of game.boardState; let i = index">
-      <td *ngFor="let cell of row; let j = index">
-        <rpr-cell
-          [cellNumber]="cell.value"
-          (click)="game.check(i, j)"
-          [status]="cell.status"
-        ></rpr-cell>
-      </td>
-    </tr>
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="9">
-        <rpr-control [game]="game"></rpr-control>
-      </td>
-    </tr>
-  </tfoot>
-</table> -->

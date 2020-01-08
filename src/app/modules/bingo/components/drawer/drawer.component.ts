@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { chain, sortBy } from 'lodash';
+import { chain } from 'lodash';
 import { Dealer } from '../../core/bingo.game';
-import { filter, switchMap, map, mapTo, startWith, scan, takeWhile, take, takeUntil, tap } from 'rxjs/operators';
-import { Observable, combineLatest, Subject, interval, fromEvent, merge, empty } from 'rxjs';
+import { filter, switchMap, map, mapTo, startWith, takeUntil } from 'rxjs/operators';
+import { Observable, combineLatest, Subject, interval, merge, empty } from 'rxjs';
 
 @Component({
   selector: DrawerComponent.selector,
@@ -17,6 +17,7 @@ export class DrawerComponent implements OnInit {
   private resumeSubject: Subject<any> = new Subject();
 
   @Input() dealer$: Observable<Dealer>;
+  @Input() theme: string = 'theme-red';
   @Output() restartDealer: EventEmitter<any> = new EventEmitter();
   dealerExposedNumbers: any;
   dealerExposedNumbers$: Observable<any>;
@@ -65,10 +66,9 @@ export class DrawerComponent implements OnInit {
       filter(([currentExposed, dealer]) => currentExposed !== null && dealer !== null),
       map(([currentExposed, dealer]) =>
         chain(dealer.drawerState.exposedNumbers)
-          .groupBy(value => (value < 90 ? Math.floor(value / 10) : 0))
-          .mapValues(sortBy)
-          .values()
-          .value(),
+          .sortBy()
+          .chunk(10)
+          .value()
       ),
     );
   }

@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DealerComponent } from './components/dealer/dealer.component';
 import { PlayerComponent } from './components/player/player.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'player',
+    component: HomeComponent,
   },
   {
     path: 'dealer',
