@@ -1,4 +1,6 @@
-<div class="player-component">
-  <rpr-board #board [game]="game$ | async"></rpr-board>
-  <!-- <rpr-chat-room (messageRecieved)="onMessageRecieved($event)"></rpr-chat-room>   -->
-</div>
+<rpr-bingo-main-layout (back)="back()" [hasSideMenu]="false">
+  <div class="player-component">
+    <rpr-board #board [game]="game$ | async"></rpr-board>
+    <!-- <rpr-chat-room (messageRecieved)="onMessageRecieved($event)"></rpr-chat-room>   -->
+  </div>
+</rpr-bingo-main-layout>

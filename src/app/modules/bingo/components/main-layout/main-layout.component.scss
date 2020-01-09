@@ -1,0 +1,27 @@
+.dealer-container {
+  height: 100%;
+  .dealer-sidenav {
+    padding: 10px;
+    .title {
+      width: 250px;
+    }
+  }
+  .dealer-sidenav-content {
+    padding: 10px;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu-button-group {
+    position: fixed;
+    padding: 10px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    button {
+      margin-right: 10px;
+    }
+  }
+}

@@ -5,7 +5,7 @@ import { switchMap, filter, map } from 'rxjs/operators';
 import { BingoGame, GameStatus, Dealer } from '../../core/bingo.game';
 import { ChatRoomComponent } from 'src/app/modules/chat/components/chat-room/chat-room.component';
 import { BoardComponent } from '../board/board.component';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: DealerComponent.selector,
@@ -25,7 +25,7 @@ export class DealerComponent implements OnInit {
   @ViewChild('chatRoom', { static: true }) chatRoom: ChatRoomComponent;
   @ViewChild('board', { static: true }) board: BoardComponent;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.dealer$ = this.dealerSubject.asObservable();
@@ -76,5 +76,9 @@ export class DealerComponent implements OnInit {
 
   initDealer() {
     this.dealerSubject.next(new Dealer());
+  }
+
+  back() {
+    this.router.navigate(['..'], {relativeTo: this.activatedRoute})
   }
 }

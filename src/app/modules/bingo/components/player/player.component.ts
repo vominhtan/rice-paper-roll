@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { BoardComponent } from '../board/board.component';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: PlayerComponent.selector,
@@ -10,6 +11,10 @@ import { BoardComponent } from '../board/board.component';
 export class PlayerComponent {
   static readonly selector = 'rpr-player';
   @ViewChild('board', {static: true}) board: BoardComponent;
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+
+  }
 
   onMessageRecieved(message) {
     const content = message.content as string;
@@ -24,5 +29,9 @@ export class PlayerComponent {
 
   announceNumber(number) {
     this.board.announce(number);
+  }
+
+  back() {
+    this.router.navigate(['..'], {relativeTo: this.activatedRoute})
   }
 }

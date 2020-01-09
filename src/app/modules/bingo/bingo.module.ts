@@ -8,6 +8,8 @@ import { DrawerComponent } from './components/drawer/drawer.component';
 import { BoardComponent } from './components/board/board.component';
 import { ChatModule } from '../chat/chat.module';
 import { HomeComponent } from './components/home/home.component';
+import { MaterialModule } from '../shared/material.module';
+import { BingoMainLayoutComponent } from './components/main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -17,8 +19,10 @@ import { HomeComponent } from './components/home/home.component';
     DrawerComponent,
     BoardComponent,
     HomeComponent,
+    BingoMainLayoutComponent,
   ],
   imports: [
+    MaterialModule,
     ChatModule,
     BingoRoutingModule,
     CommonModule],

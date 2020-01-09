@@ -62,6 +62,7 @@ $diamondSize: 110px;
       transform: rotate(-45deg);
       vertical-align: middle;
       width: $diamondSize;
+      user-select: none;
     }
   }
 }

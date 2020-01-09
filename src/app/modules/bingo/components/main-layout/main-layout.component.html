@@ -1,0 +1,16 @@
+<mat-drawer-container class="dealer-container" autosize>
+  <mat-drawer #drawer class="dealer-sidenav" mode="over">
+    <ng-content select=".side-menu"></ng-content>
+  </mat-drawer>
+  <div class="menu-button-group">
+    <button mat-fab (click)="drawer.toggle()" *ngIf="hasSideMenu">
+      <mat-icon aria-hidden="false">menu</mat-icon>
+    </button>
+    <button mat-fab (click)="back.emit()">
+      <mat-icon aria-hidden="false">home</mat-icon>
+    </button>
+  </div>
+  <div class="dealer-sidenav-content">
+    <ng-content></ng-content>
+  </div>
+</mat-drawer-container>

@@ -1,5 +1,7 @@
-<div class="dealer-component">
+<rpr-bingo-main-layout (back)="back()" [hasSideMenu]="true">
+  <div class="side-menu">Lô tô đê bà con ơi</div>
+  <div class="dealer-component">
     <rpr-board #board [game]="game$ | async" [theme]="theme$ | async"></rpr-board>
     <rpr-drawer [dealer$]="dealer$" (restartDealer)="initDealer()" [theme]="theme$ | async"></rpr-drawer>
-    <!-- <rpr-chat-room #chatRoom></rpr-chat-room> -->
-</div>
+  </div>
+</rpr-bingo-main-layout>

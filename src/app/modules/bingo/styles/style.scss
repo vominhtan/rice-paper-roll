@@ -30,7 +30,8 @@ $break-large: 1024px;
   padding: 0;
   text-align: center;
   line-height: $size;
-  display: inline-block;
+  // display: inline-block;
+  display: table-cell;
 }
 
 .flex-component {
@@ -92,12 +93,6 @@ $break-large: 1024px;
         padding: 0px 10px 10px 10px;
       }
 
-      &.exposed {
-        max-height: 170px;
-        overflow-y: scroll;
-        display: block;
-      }
-
       tbody {
         tr {
           &.divider {
@@ -128,7 +123,7 @@ $break-large: 1024px;
               color: $selectedCellColor;
               font-weight: bold;
               border-radius: 100%;
-              box-shadow: 1px 3px 10px 0 rgba(0, 0, 0, 0.2), 4px 4px 10px 0 rgba(0, 0, 0, 0.19);
+              box-shadow: 1px 0 3px 0 rgba(0, 0, 0, 0.2), 3px 0 5px 0 rgba(0, 0, 0, 0.19);
 
               &.recent {
                 background-color: darken($selectedCellBgColor, 20%);
