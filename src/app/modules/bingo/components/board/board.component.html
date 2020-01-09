@@ -20,7 +20,36 @@
         </tr>
       </thead>
     </table>
-    <table cellspacing="0" cellpadding="0" class="game-board">
+    <table cellspacing="0" cellpadding="0" class="row" *ngFor="let row of game.boardState; let i = index" [class.highlight]="game.bingoRowIdx === i">
+      <tbody>
+        <tr>
+          <td
+            *ngFor="let cell of row; let j = index"
+            [class.selected]="cell.status === 'CHECKED'"
+            [class.cell]="true"
+            (click)="game.check(i, j)"
+          >
+            {{ cell.value }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table cellspacing="0" cellpadding="0" class="row">
+      <tbody>
+        <tr class="divider">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <table cellspacing="0" cellpadding="0" class="game-board">
       <tbody>
         <tr class="divider">
           <td></td>
@@ -44,6 +73,6 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
   </div>
 </div>

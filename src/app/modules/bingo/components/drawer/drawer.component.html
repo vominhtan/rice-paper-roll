@@ -22,17 +22,27 @@
         </tr>
       </thead>
     </table>
-    <table cellspacing="0" cellpadding="0" class="game-board">
-      <tbody>
-        <tr *ngFor="let row of dealerExposedNumbers$ | async; let i = index">
+    <table cellspacing="0" cellpadding="0" class="row exposed">
+      <tbody *ngIf="dealerExposedNumbers$ | async as dealerExposedNumbers">
+        <tr *ngFor="let row of dealerExposedNumbers; let i = index">
           <td
             *ngFor="let cell of row; let j = index"
             [class.selected]="cell"
             [class.cell]="true"
-            [class.recent]="cell === (currentExposed$ | async) "
+            [class.recent]="cell === currentExposed"
           >
             {{ cell }}
           </td>
+          <td *ngIf="row.length < 1" [class.cell]="true"></td>
+          <td *ngIf="row.length < 2" [class.cell]="true"></td>
+          <td *ngIf="row.length < 3" [class.cell]="true"></td>
+          <td *ngIf="row.length < 4" [class.cell]="true"></td>
+          <td *ngIf="row.length < 5" [class.cell]="true"></td>
+          <td *ngIf="row.length < 6" [class.cell]="true"></td>
+          <td *ngIf="row.length < 7" [class.cell]="true"></td>
+          <td *ngIf="row.length < 8" [class.cell]="true"></td>
+          <td *ngIf="row.length < 9" [class.cell]="true"></td>
+          <td *ngIf="row.length < 10" [class.cell]="true"></td>
         </tr>
       </tbody>
     </table>

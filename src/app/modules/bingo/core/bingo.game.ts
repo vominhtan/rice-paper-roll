@@ -76,7 +76,9 @@ export class BingoGame {
   }
 
   public init(initialBoard?: number[][]) {
+    console.time('initBoardMap');
     this.boardMap = initialBoard ? initialBoard : this.initBoardMap();
+    console.timeEnd('initBoardMap');
   }
 
   private initBoardMap(from: number = 1, to: number = 90, sets: number = 9, of: number = 5): number[][] {
@@ -125,6 +127,17 @@ export class BingoGame {
       return resultArray;
     }
 
+    function checkRule(array: any[][]): boolean {
+      const counts: any[] = _.reduce(array, (prev, row) => {
+        _.forEach(row, (cell, cellIdx) => {
+          prev[cellIdx] = prev[cellIdx] + (cell ? 1 : 0);
+        });
+        return prev;
+      }, [0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
+      return _.max(counts) - _.min(counts) <= 2;
+    }
+
     let numberPools: any = _.chain(allNumbers)
       .groupBy(value => Math.floor((value === to ? to - 1 : value) / 10))
       .map(array => shuffle(array))
@@ -133,10 +146,17 @@ export class BingoGame {
 
     numberPools = invert(numberPools);
     const randomPullOutFn = randomPullOut(numberPools.length, of);
-    const result = _.map(_.cloneDeep(numberPools), array => {
-      return randomPullOutFn(array);
-    });
+    let result = [];
 
+    for (let rowIndex = 0; rowIndex < numberPools.length; rowIndex++) {
+      let temp = [];
+      let newRow = [];
+      do {
+        newRow = randomPullOutFn(_.cloneDeep(numberPools[rowIndex]));
+        temp = [...result, newRow];
+      } while (!checkRule(temp));
+      result.push(newRow);
+    }
     return result;
   }
 

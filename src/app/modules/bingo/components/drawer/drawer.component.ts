@@ -23,6 +23,7 @@ export class DrawerComponent implements OnInit {
   dealerExposedNumbers$: Observable<any>;
   currentExposed$: Observable<number>;
   autoStatus$: Observable<boolean>;
+  currentExposed: number;
 
   constructor() {}
 
@@ -31,6 +32,10 @@ export class DrawerComponent implements OnInit {
       filter(dealer => dealer !== null),
       switchMap(dealer => dealer.onExposedNumber),
     );
+
+    this.currentExposed$.subscribe((value) => {
+      this.currentExposed = value;
+    });
 
     const interval$ = interval(3000).pipe(mapTo(-1));
     const pause$ = this.pauseSubject.asObservable().pipe(mapTo(false));

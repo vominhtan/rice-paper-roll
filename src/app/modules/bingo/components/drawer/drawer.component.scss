@@ -1,6 +1,7 @@
 @import "../../styles/style.scss";
 
 @include respond-to(small-handhelds) {
+
   @each $name, $color, $bgColor in $colors {
     .theme-#{$name} {
       @include table(29px, $bgColor, $color);
@@ -31,4 +32,3 @@
     }
   }
 }
-

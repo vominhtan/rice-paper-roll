@@ -40,13 +40,16 @@ $break-large: 1024px;
 
   .wrapper {
     display: inline-block;
-    margin: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 2px 10px 10px 0 rgba(0, 0, 0, 0.2), 4px 10px 10px 0 rgba(0, 0, 0, 0.19);
   }
 }
 
 @mixin table($cellSize, $color, $bgColor) {
   $selectedCellBgColor: $color;
   $selectedCellColor: $bgColor;
+
   table {
     * {
       user-select: none;
@@ -54,10 +57,9 @@ $break-large: 1024px;
       color: $color;
       // background-color: #23272a;
       user-select: none;
+      border: none;
     }
     background-color: $bgColor;
-    overflow: hidden;
-    box-shadow: 2px 10px 10px 0 rgba(0, 0, 0, 0.2), 4px 10px 10px 0 rgba(0, 0, 0, 0.19);
 
     &.control {
       padding: 10px 10px 0 10px;
@@ -78,11 +80,31 @@ $break-large: 1024px;
       }
     }
 
-    &.game-board {
-      border-radius: 0 0 10px 10px;
-      padding: 0px 10px 10px 10px;
+    &.row {
+      padding: 0px 10px 0 10px;
+
+      &.highlight {
+        background-color: darken($selectedCellBgColor, 20%);
+      }
+
+      &:last-child {
+        border-radius: 0 0 10px 10px;
+        padding: 0px 10px 10px 10px;
+      }
+
+      &.exposed {
+        max-height: 170px;
+        overflow-y: scroll;
+        display: block;
+      }
+
       tbody {
         tr {
+          &.divider {
+            td {
+              width: $cellSize;
+            }
+          }
           &.highlight {
             background-color: darken($selectedCellBgColor, 20%);
             td {
@@ -99,6 +121,7 @@ $break-large: 1024px;
 
           td.cell {
             @include cell-style($cellSize);
+            font-size: 20px;
 
             &.selected {
               background-color: $selectedCellBgColor;
