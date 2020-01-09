@@ -84,22 +84,6 @@ export class BingoGame {
   private initBoardMap(from: number = 1, to: number = 90, sets: number = 9, of: number = 5): number[][] {
     const allNumbers = fill(from, to);
 
-    function shuffle(array) {
-      let currentIndex = array.length;
-      let temporaryValue;
-      let randomIndex;
-
-      while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-      }
-
-      return array;
-    }
-
     function randomPullOut(columns: number, keep: number) {
       const columnIndexs: number[] = fill(0, columns - 1);
       return (array: any[]): any[] => {
@@ -277,6 +261,10 @@ export class Dealer {
     this.exposedNumberSubject.next(ball);
   }
 
+  shufflePool() {
+    shuffle(this.drawerState.numbersPoll);
+  }
+
   randomFromPool() {
     const idx = _.random(0, this.drawerState.numbersPoll.length - 1);
     this.exposeNumber(this.drawerState.numbersPoll[idx]);
@@ -293,5 +281,21 @@ function fill(fromA: number, toB: number, array: number[] = []): number[] {
   for (let i = fromA; i <= toB; i++) {
     array.push(i);
   }
+  return array;
+}
+
+function shuffle<T extends any>(array: T[]): T[] {
+  let currentIndex = array.length;
+  let temporaryValue;
+  let randomIndex;
+
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
   return array;
 }
