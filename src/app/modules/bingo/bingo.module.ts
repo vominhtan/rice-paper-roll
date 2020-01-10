@@ -10,6 +10,8 @@ import { ChatModule } from '../chat/chat.module';
 import { HomeComponent } from './components/home/home.component';
 import { MaterialModule } from '../shared/material.module';
 import { BingoMainLayoutComponent } from './components/main-layout/main-layout.component';
+import { SettingService } from './services/setting.service';
+import { SettingComponent } from './components/setting/setting.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,10 @@ import { BingoMainLayoutComponent } from './components/main-layout/main-layout.c
     BoardComponent,
     HomeComponent,
     BingoMainLayoutComponent,
+    SettingComponent,
+  ],
+  providers: [
+    SettingService
   ],
   imports: [
     MaterialModule,

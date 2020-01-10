@@ -1,6 +1,8 @@
 import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { BoardComponent } from '../board/board.component';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SettingService } from '../../services/setting.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: PlayerComponent.selector,
@@ -12,8 +14,14 @@ export class PlayerComponent {
   static readonly selector = 'rpr-player';
   @ViewChild('board', {static: true}) board: BoardComponent;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  theme$: Observable<string>;
 
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private settingService: SettingService) {
+
+  }
+
+  ngOnInit() {
+    this.theme$ = this.settingService.colorTheme$;
   }
 
   onMessageRecieved(message) {

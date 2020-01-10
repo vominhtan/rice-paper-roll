@@ -1,0 +1,13 @@
+@import '../../styles/style.scss';
+
+@each $name, $color, $bgColor in $colors {
+  div {
+    &.items {
+      margin-bottom: 10px;
+      height: 24px;
+    }
+    &.theme-#{$name} {
+      background-color: $bgColor;
+    }
+  }
+}

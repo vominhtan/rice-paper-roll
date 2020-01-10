@@ -1,6 +1,9 @@
-<rpr-bingo-main-layout (back)="back()" [hasSideMenu]="false">
+<rpr-bingo-main-layout (back)="back()" [hasSideMenu]="true">
+  <div class="side-menu">
+    <rpr-setting></rpr-setting>
+  </div>
   <div class="player-component">
-    <rpr-board #board [game]="game$ | async"></rpr-board>
+    <rpr-board #board [game]="game$ | async" [theme]="theme$ | async"></rpr-board>
     <!-- <rpr-chat-room (messageRecieved)="onMessageRecieved($event)"></rpr-chat-room>   -->
   </div>
 </rpr-bingo-main-layout>

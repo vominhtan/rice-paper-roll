@@ -6,6 +6,7 @@ import { BingoGame, GameStatus, Dealer } from '../../core/bingo.game';
 import { ChatRoomComponent } from 'src/app/modules/chat/components/chat-room/chat-room.component';
 import { BoardComponent } from '../board/board.component';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { SettingService } from '../../services/setting.service';
 
 @Component({
   selector: DealerComponent.selector,
@@ -25,12 +26,12 @@ export class DealerComponent implements OnInit {
   @ViewChild('chatRoom', { static: true }) chatRoom: ChatRoomComponent;
   @ViewChild('board', { static: true }) board: BoardComponent;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private settingService: SettingService) {}
 
   ngOnInit() {
     this.dealer$ = this.dealerSubject.asObservable();
     this.game$ = this.gameSubject.asObservable();
-    this.theme$ = of('theme-red');
+    this.theme$ = this.settingService.colorTheme$;
 
     this.isGameInProgress$ = this.game$.pipe(
       filter(game => game !== null),

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { BingoGame, GameStatus } from '../../core/bingo.game';
+import { BingoGame } from '../../core/bingo.game';
 
 @Component({
   selector: BoardComponent.selector,

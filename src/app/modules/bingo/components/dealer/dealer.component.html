@@ -1,5 +1,7 @@
 <rpr-bingo-main-layout (back)="back()" [hasSideMenu]="true">
-  <div class="side-menu">Lô tô đê bà con ơi</div>
+  <div class="side-menu">
+    <rpr-setting></rpr-setting>
+  </div>
   <div class="dealer-component">
     <rpr-board #board [game]="game$ | async" [theme]="theme$ | async"></rpr-board>
     <rpr-drawer [dealer$]="dealer$" (restartDealer)="initDealer()" [theme]="theme$ | async"></rpr-drawer>
