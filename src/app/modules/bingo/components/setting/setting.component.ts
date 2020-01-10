@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingService } from '../../services/setting.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'rpr-setting',
@@ -8,9 +9,12 @@ import { SettingService } from '../../services/setting.service';
 })
 export class SettingComponent implements OnInit {
 
-  themes: string[] = ['theme-red', 'theme-purple']
+  themes: string[] = ['theme-red', 'theme-purple', 'theme-green', 'theme-blue', 'theme-orange'];
+  isDarkTheme$: Observable<boolean>;
 
-  constructor(private settingService: SettingService) { }
+  constructor(private settingService: SettingService) {
+    this.isDarkTheme$ === settingService.darkTheme$;
+  }
 
   ngOnInit() {
   }
