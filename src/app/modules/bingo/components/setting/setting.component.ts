@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class SettingComponent implements OnInit {
 
-  themes: string[] = ['theme-red', 'theme-purple', 'theme-green', 'theme-blue', 'theme-orange'];
+  themes: string[] = ['theme-red', 'theme-purple', 'theme-green', 'theme-blue', 'theme-orange', 'theme-gray', 'theme-pink', 'theme-yellow'];
   isDarkTheme$: Observable<boolean>;
 
   constructor(private settingService: SettingService) {
