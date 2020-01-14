@@ -12,6 +12,10 @@ import { MaterialModule } from '../shared/material.module';
 import { BingoMainLayoutComponent } from './components/main-layout/main-layout.component';
 import { SettingService } from './services/setting.service';
 import { SettingComponent } from './components/setting/setting.component';
+import { GameRoomComponent } from './components/game-room/game-room.component';
+import { JoinGameComponent } from './components/join-game/join-game.component';
+import { GameService } from './services/game.service';
+import { FirebaseGameService } from './services/firebase-game.service';
 
 @NgModule({
   declarations: [
@@ -23,14 +27,10 @@ import { SettingComponent } from './components/setting/setting.component';
     HomeComponent,
     BingoMainLayoutComponent,
     SettingComponent,
+    GameRoomComponent,
+    JoinGameComponent,
   ],
-  providers: [
-    SettingService
-  ],
-  imports: [
-    MaterialModule,
-    ChatModule,
-    BingoRoutingModule,
-    CommonModule],
+  providers: [SettingService, { provide: GameService, useClass: FirebaseGameService }],
+  imports: [MaterialModule, ChatModule, BingoRoutingModule, CommonModule],
 })
-export class BingoModule { }
+export class BingoModule {}

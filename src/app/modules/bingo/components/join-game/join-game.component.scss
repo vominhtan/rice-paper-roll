@@ -1,0 +1,88 @@
+@import '../../styles/colors.scss';
+
+$wrapperSize: 155px;
+$padding: 10px;
+$diamondSize: 110px;
+
+.rpr-home {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 100%;
+  background: #e91e63;
+  .row-group {
+    margin-top: 100px;
+    .row {
+      &:nth-child(even) {
+        &::before {
+          content: '';
+          display: inline-block;
+          width: $wrapperSize / 2 + $padding;
+        }
+      }
+      height: $wrapperSize / 2 + $padding;
+    }
+  }
+}
+
+.diamond-shape-wrapper {
+  font-family: 'Montserrat', sans-serif;
+  width: $wrapperSize;
+  height: $wrapperSize;
+  padding: $padding;
+  display: inline-block;
+  .diamond-shape {
+    background: $foreground-color-1;
+    box-shadow: 2px 10px 10px 0 rgba(0, 0, 0, 0.2), 4px 10px 10px 0 rgba(0, 0, 0, 0.19);
+    height: $diamondSize;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+    transform: translate(21px, 21px) rotate(45deg);
+    width: $diamondSize;
+    transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    &.open {
+      $diamondSizeXL: $diamondSize * 2;
+      height: $diamondSizeXL;
+      width: $diamondSizeXL;
+      transform: translate(-34px, 44px) rotate(45deg);
+      background-color: #ea1313;
+
+      .form-wraper {
+        color: #fff;
+        font-weight: bold;
+        display: table-cell;
+        height: $diamondSizeXL;
+        transform: rotate(-45deg);
+        vertical-align: middle;
+        width: $diamondSizeXL;
+        user-select: none;
+      }
+    }
+
+    &.flower-bg {
+      background-image: url('/assets/bgs/flower.webp');
+      background-size: 181%;
+      background-repeat: no-repeat;
+      background-position-y: 36px;
+      background-position-x: -34px;
+
+      .item-text {
+        padding-left: 35px;
+        padding-right: 6px;
+      }
+    }
+
+    .item-text {
+      color: $color-1;
+      font-weight: bold;
+      display: table-cell;
+      height: $diamondSize;
+      transform: rotate(-45deg);
+      vertical-align: middle;
+      width: $diamondSize;
+      user-select: none;
+    }
+  }
+}

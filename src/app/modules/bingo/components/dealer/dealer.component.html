@@ -4,6 +4,6 @@
   </div>
   <div class="dealer-component">
     <rpr-board #board [game]="game$ | async" [theme]="theme$ | async"></rpr-board>
-    <rpr-drawer [dealer$]="dealer$" (restartDealer)="initDealer()" [theme]="theme$ | async"></rpr-drawer>
+    <rpr-drawer [dealer$]="dealer$" (restartDealer)="initDealer()" [theme]="theme$ | async" [excludedNumbers]="checkedNumbers$ | async"></rpr-drawer>
   </div>
 </rpr-bingo-main-layout>

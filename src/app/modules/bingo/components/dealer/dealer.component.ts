@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Subscription, Subject, BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
+import { Subscription, Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { switchMap, filter, map } from 'rxjs/operators';
+import { chain } from 'lodash';
 
-import { BingoGame, GameStatus, Dealer } from '../../core/bingo.game';
+import { BingoGame, GameStatus, Dealer, CellStatus, Cell } from '../../core/bingo.game';
 import { ChatRoomComponent } from 'src/app/modules/chat/components/chat-room/chat-room.component';
 import { BoardComponent } from '../board/board.component';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -19,6 +20,7 @@ export class DealerComponent implements OnInit {
   gameSubject: Subject<BingoGame> = new BehaviorSubject(null);
   dealerSubscription: Subscription;
   dealer$: Observable<Dealer>;
+  checkedNumbers$: Observable<number[]>;
   game$: Observable<BingoGame>;
   isGameInProgress$: Observable<boolean>;
   theme$: Observable<string>;
@@ -37,6 +39,23 @@ export class DealerComponent implements OnInit {
       filter(game => game !== null),
       switchMap(game => game.onStatusChanged),
       map(gameStatus => gameStatus !== GameStatus.END),
+    );
+
+    this.checkedNumbers$ = this.game$.pipe(
+      filter(game => game !== null),
+      switchMap(
+        game => game.onChanged,
+        (outerValue: BingoGame) => outerValue,
+      ),
+      map((game: BingoGame) =>
+        chain(game.boardState)
+          .flatten()
+          .filter((cell: Cell) => {
+            return cell.value && cell.status === CellStatus.CHECKED;
+          })
+          .map('value')
+          .value(),
+      ),
     );
 
     combineLatest(this.dealer$, this.game$)
@@ -80,6 +99,6 @@ export class DealerComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['..'], {relativeTo: this.activatedRoute})
+    this.router.navigate(['..'], { relativeTo: this.activatedRoute });
   }
 }

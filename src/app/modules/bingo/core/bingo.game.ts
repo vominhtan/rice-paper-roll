@@ -261,12 +261,14 @@ export class Dealer {
     this.exposedNumberSubject.next(ball);
   }
 
-  shufflePool() {
+  private shufflePool() {
     shuffle(this.drawerState.numbersPoll);
   }
 
   randomFromPool() {
     const idx = _.random(0, this.drawerState.numbersPoll.length - 1);
+    this.shufflePool();
+    console.log(this.drawerState.numbersPoll);
     this.exposeNumber(this.drawerState.numbersPoll[idx]);
     this.drawerState.numbersPoll.splice(idx, 1);
     if (this.drawerState.numbersPoll.length === 0) {

@@ -1,0 +1,6 @@
+<ng-container *ngIf="roomID; else roomSelector">
+  <router-outlet></router-outlet>
+</ng-container>
+<ng-template #roomSeletor>
+  <div>Select room id</div>
+</ng-template>

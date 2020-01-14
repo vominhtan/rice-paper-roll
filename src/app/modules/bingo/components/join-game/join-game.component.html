@@ -1,0 +1,37 @@
+<div class="rpr-home">
+  <div class="row-group">
+    <div class="row">
+      <div class="diamond-shape-wrapper">
+        <div class="container diamond-shape">
+          <div class="item-text" (click)="createNewRoom()">Tạo phòng chơi mới</div>
+        </div>
+      </div>
+      <div class="diamond-shape-wrapper">
+        <div class="container diamond-shape flower-bg">
+          <div class="item-text">Chúc mừng năm mới</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="diamond-shape-wrapper">
+        <div class="container diamond-shape" [ngClass]="{ open: showJoinRoomForm }">
+          <ng-container *ngIf="!showJoinRoomForm; else joinFormTpl">
+            <div class="item-text" (click)="displayJoinRoomForm()">Vào phòng</div>
+          </ng-container>
+          <ng-template #joinFormTpl>
+            <div class="form-wraper">
+              <mat-form-field [floatLabel]="'never'">
+                <mat-label>Nickname</mat-label>
+                <input matInput placeholder="Nickname">
+              </mat-form-field>
+              <mat-form-field [floatLabel]="'never'">
+                <mat-label>Room ID</mat-label>
+                <input matInput placeholder="Room ID">
+              </mat-form-field>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

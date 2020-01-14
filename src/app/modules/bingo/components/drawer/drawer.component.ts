@@ -17,6 +17,7 @@ export class DrawerComponent implements OnInit {
   private resumeSubject: Subject<any> = new Subject();
 
   @Input() dealer$: Observable<Dealer>;
+  @Input() excludedNumbers: number[] = [];
   @Input() theme: string = 'theme-red';
   @Output() restartDealer: EventEmitter<any> = new EventEmitter();
   dealerExposedNumbers: any;
@@ -33,7 +34,7 @@ export class DrawerComponent implements OnInit {
       switchMap(dealer => dealer.onExposedNumber),
     );
 
-    this.currentExposed$.subscribe((value) => {
+    this.currentExposed$.subscribe(value => {
       this.currentExposed = value;
     });
 
@@ -71,9 +72,10 @@ export class DrawerComponent implements OnInit {
       filter(([currentExposed, dealer]) => currentExposed !== null && dealer !== null),
       map(([currentExposed, dealer]) =>
         chain(dealer.drawerState.exposedNumbers)
+          .difference(this.excludedNumbers)
           .sortBy()
           .chunk(10)
-          .value()
+          .value(),
       ),
     );
   }
