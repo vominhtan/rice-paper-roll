@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GameService } from '../../services/game.service';
-import { Room } from '../../models';
+import { Room, User } from '../../models';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 enum KeyCodes {
@@ -15,11 +15,15 @@ enum KeyCodes {
   styleUrls: ['./join-game.component.scss'],
 })
 export class JoinGameComponent implements OnInit {
-
   showJoinRoomForm = false;
   credentialForm: FormGroup;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private gameService: GameService, private fb: FormBuilder) {
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private gameService: GameService,
+    private fb: FormBuilder,
+  ) {
     this.credentialForm = fb.group({
       roomId: ['', Validators.required],
       username: ['', Validators.required],
@@ -46,9 +50,25 @@ export class JoinGameComponent implements OnInit {
     this.showJoinRoomForm = false;
   }
 
+  deleteAllMessage() {
+    if (this.credentialForm.invalid) return;
+    const { roomId } = this.credentialForm.value;
+    this.gameService.deleteMessages(roomId).subscribe(value => {
+      console.log(value);
+    });
+  }
+
   join() {
-    this.gameService.joinRoom().subscribe((room: Room) => {
-      this.router.navigate([room.id, 'player'], { relativeTo: this.activatedRoute });
+    if (this.credentialForm.invalid) return;
+    const { roomId, username } = this.credentialForm.value;
+    this.gameService.joinRoom(roomId, username).subscribe(({ room, user }: { room: Room; user: User }) => {
+      this.router.navigate([room.id, 'player'], {
+        queryParams: {
+          userID: user.id,
+        },
+        relativeTo: this.activatedRoute,
+        queryParamsHandling: 'merge',
+      });
     });
   }
 

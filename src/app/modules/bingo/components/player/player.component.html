@@ -3,7 +3,7 @@
     <rpr-setting></rpr-setting>
   </div>
   <div class="player-component">
-    <rpr-board #board [game]="game$ | async" [theme]="theme$ | async"></rpr-board>
+    <rpr-board #board [game]="game$ | async" [theme]="theme$ | async" [roomID]="roomID" [userID]="userID"></rpr-board>
     <!-- <rpr-chat-room (messageRecieved)="onMessageRecieved($event)"></rpr-chat-room>   -->
   </div>
 </rpr-bingo-main-layout>

@@ -4,10 +4,11 @@ import { switchMap, filter, map } from 'rxjs/operators';
 import { chain } from 'lodash';
 
 import { BingoGame, GameStatus, Dealer, CellStatus, Cell } from '../../core/bingo.game';
-import { ChatRoomComponent } from 'src/app/modules/chat/components/chat-room/chat-room.component';
 import { BoardComponent } from '../board/board.component';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SettingService } from '../../services/setting.service';
+import { getFullTreeParams } from '../../utils/common.utils';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: DealerComponent.selector,
@@ -24,16 +25,18 @@ export class DealerComponent implements OnInit {
   game$: Observable<BingoGame>;
   isGameInProgress$: Observable<boolean>;
   theme$: Observable<string>;
+  roomID: string;
 
-  @ViewChild('chatRoom', { static: true }) chatRoom: ChatRoomComponent;
   @ViewChild('board', { static: true }) board: BoardComponent;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private settingService: SettingService) {}
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private settingService: SettingService, private gameService: GameService) {}
 
   ngOnInit() {
+    this.roomID = getFullTreeParams(this.activatedRoute)['roomID'];
     this.dealer$ = this.dealerSubject.asObservable();
     this.game$ = this.gameSubject.asObservable();
     this.theme$ = this.settingService.colorTheme$;
+
 
     this.isGameInProgress$ = this.game$.pipe(
       filter(game => game !== null),
@@ -69,7 +72,7 @@ export class DealerComponent implements OnInit {
           this.dealerSubscription.unsubscribe();
         }
         this.dealerSubscription = dealer.onExposedNumber.subscribe(number => {
-          this.setMessageToChatRoom(`[${number}]`);
+          this.gameService.announceNumber(this.roomID, number);
           this.announceNumber(number);
           game.checkByNumber(number);
         });
@@ -77,12 +80,6 @@ export class DealerComponent implements OnInit {
 
     this.initDealer();
     this.initGame();
-  }
-
-  setMessageToChatRoom(message: string) {
-    if (this.chatRoom) {
-      this.chatRoom.sendMessage(message);
-    }
   }
 
   announceNumber(number) {

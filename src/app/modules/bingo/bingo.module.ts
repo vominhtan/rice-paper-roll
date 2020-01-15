@@ -16,6 +16,7 @@ import { GameRoomComponent } from './components/game-room/game-room.component';
 import { JoinGameComponent } from './components/join-game/join-game.component';
 import { GameService } from './services/game.service';
 import { FirebaseGameService } from './services/firebase-game.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,6 @@ import { FirebaseGameService } from './services/firebase-game.service';
     JoinGameComponent,
   ],
   providers: [SettingService, { provide: GameService, useClass: FirebaseGameService }],
-  imports: [MaterialModule, ChatModule, BingoRoutingModule, CommonModule],
+  imports: [MaterialModule, ChatModule, BingoRoutingModule, CommonModule, ReactiveFormsModule],
 })
 export class BingoModule {}

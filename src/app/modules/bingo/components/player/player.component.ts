@@ -1,8 +1,9 @@
 import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { BoardComponent } from '../board/board.component';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SettingService } from '../../services/setting.service';
 import { Observable } from 'rxjs';
+import { getFullTreeParams } from '../../utils/common.utils';
 
 @Component({
   selector: PlayerComponent.selector,
@@ -12,16 +13,20 @@ import { Observable } from 'rxjs';
 })
 export class PlayerComponent {
   static readonly selector = 'rpr-player';
-  @ViewChild('board', {static: true}) board: BoardComponent;
+  @ViewChild('board', { static: true }) board: BoardComponent;
 
   theme$: Observable<string>;
+  roomID: string;
+  userID: string;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private settingService: SettingService) {
-
-  }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private settingService: SettingService) {}
 
   ngOnInit() {
     this.theme$ = this.settingService.colorTheme$;
+    this.roomID = getFullTreeParams(this.activatedRoute)['roomID'];
+    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+      this.userID = queryParams.userID;
+    });
   }
 
   onMessageRecieved(message) {
@@ -30,7 +35,7 @@ export class PlayerComponent {
     const numberRegex = /(?<=\[)\d*(?=\])/g;
     const found = content.match(numberRegex);
 
-    if (found &&  found.length) {
+    if (found && found.length) {
       this.announceNumber(parseInt(found[0]));
     }
   }
@@ -40,6 +45,6 @@ export class PlayerComponent {
   }
 
   back() {
-    this.router.navigate(['..'], {relativeTo: this.activatedRoute})
+    this.router.navigate(['..'], { relativeTo: this.activatedRoute });
   }
 }

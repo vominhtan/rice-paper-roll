@@ -19,16 +19,19 @@
             <div class="item-text" (click)="displayJoinRoomForm()">Vào phòng</div>
           </ng-container>
           <ng-template #joinFormTpl>
-            <div class="form-wraper">
-              <mat-form-field [floatLabel]="'never'">
-                <mat-label>Nickname</mat-label>
-                <input matInput placeholder="Nickname">
-              </mat-form-field>
-              <mat-form-field [floatLabel]="'never'">
-                <mat-label>Room ID</mat-label>
-                <input matInput placeholder="Room ID">
-              </mat-form-field>
-            </div>
+            <ng-container [formGroup]="credentialForm">
+              <div class="form-wraper">
+                <mat-form-field [floatLabel]="'never'">
+                  <mat-label>Nickname</mat-label>
+                  <input formControlName="username" matInput placeholder="Nickname" />
+                </mat-form-field>
+                <mat-form-field [floatLabel]="'never'">
+                  <mat-label>Room ID</mat-label>
+                  <input formControlName="roomId" matInput placeholder="Room ID" />
+                </mat-form-field>
+                <button mat-button (click)="deleteAllMessage()">Delete All Message</button>
+              </div>
+            </ng-container>
           </ng-template>
         </div>
       </div>
