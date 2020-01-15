@@ -9,7 +9,8 @@ export abstract class GameService {
   abstract updateGame(roomID: string, userID: string, game: BingoGame): Observable<any>;
   abstract leaveRoom(roomID: string): void;
   abstract deleteMessages(roomID: string): Observable<any>;
-  abstract announceNumber(roomID: string, number: number): Observable<any>;
+  abstract announceNumber(roomID: string, value: number): Observable<any>;
+  abstract connectToRoomMessages(roomID: string): Observable<any>;
   abstract createNewRoom(): Observable<any>;
 }
 

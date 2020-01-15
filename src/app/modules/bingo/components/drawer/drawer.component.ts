@@ -18,7 +18,7 @@ export class DrawerComponent implements OnInit {
 
   @Input() dealer$: Observable<Dealer>;
   @Input() excludedNumbers: number[] = [];
-  @Input() theme: string = 'theme-red';
+  @Input() theme = 'theme-red';
   @Output() restartDealer: EventEmitter<any> = new EventEmitter();
   dealerExposedNumbers: any;
   dealerExposedNumbers$: Observable<any>;

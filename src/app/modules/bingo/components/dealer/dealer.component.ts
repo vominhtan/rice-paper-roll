@@ -29,7 +29,12 @@ export class DealerComponent implements OnInit {
 
   @ViewChild('board', { static: true }) board: BoardComponent;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private settingService: SettingService, private gameService: GameService) {}
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private settingService: SettingService,
+    private gameService: GameService
+  ) { }
 
   ngOnInit() {
     this.roomID = getFullTreeParams(this.activatedRoute)['roomID'];
@@ -71,10 +76,10 @@ export class DealerComponent implements OnInit {
         if (this.dealerSubscription) {
           this.dealerSubscription.unsubscribe();
         }
-        this.dealerSubscription = dealer.onExposedNumber.subscribe(number => {
-          this.gameService.announceNumber(this.roomID, number);
-          this.announceNumber(number);
-          game.checkByNumber(number);
+        this.dealerSubscription = dealer.onExposedNumber.subscribe(value => {
+          this.gameService.announceNumber(this.roomID, value);
+          this.announceNumber(value);
+          game.checkByNumber(value);
         });
       });
 
@@ -82,8 +87,8 @@ export class DealerComponent implements OnInit {
     this.initGame();
   }
 
-  announceNumber(number) {
-    this.board.announce(number);
+  announceNumber(value: number) {
+    this.board.announce(value);
   }
 
   initGame() {
@@ -93,6 +98,7 @@ export class DealerComponent implements OnInit {
 
   initDealer() {
     this.dealerSubject.next(new Dealer());
+    this.gameService.deleteMessages(this.roomID).subscribe();
   }
 
   back() {

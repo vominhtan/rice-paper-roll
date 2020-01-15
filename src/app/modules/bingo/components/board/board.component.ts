@@ -12,7 +12,7 @@ import { flatten } from 'lodash';
 })
 export class BoardComponent implements OnInit {
   static readonly selector = 'rpr-board';
-  @Input() theme: string = 'theme-red';
+  @Input() theme = 'theme-red';
   @Input() game: BingoGame;
   @Input() roomID: string;
   @Input() userID: string;
@@ -30,7 +30,7 @@ export class BoardComponent implements OnInit {
     this.game.onChanged
       .pipe(
         tap(() => {
-          if (!this.roomID || !this.userID) return;
+          if (!this.roomID || !this.userID) { return; }
           this.gameService
             .updateGame(this.roomID, this.userID, {
               kind: 'board',
@@ -54,7 +54,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  announce(number) {
-    this.voices[number].play();
+  announce(value: number) {
+    this.voices[value].play();
   }
 }

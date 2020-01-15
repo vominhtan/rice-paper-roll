@@ -1,9 +1,10 @@
-import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/core';
 import { BoardComponent } from '../board/board.component';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SettingService } from '../../services/setting.service';
 import { Observable } from 'rxjs';
 import { getFullTreeParams } from '../../utils/common.utils';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: PlayerComponent.selector,
@@ -11,7 +12,7 @@ import { getFullTreeParams } from '../../utils/common.utils';
   styleUrls: ['./player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerComponent {
+export class PlayerComponent implements OnInit {
   static readonly selector = 'rpr-player';
   @ViewChild('board', { static: true }) board: BoardComponent;
 
@@ -19,7 +20,13 @@ export class PlayerComponent {
   roomID: string;
   userID: string;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private settingService: SettingService) {}
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private settingService: SettingService,
+    private gameService: GameService) {
+
+  }
 
   ngOnInit() {
     this.theme$ = this.settingService.colorTheme$;
@@ -27,6 +34,7 @@ export class PlayerComponent {
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.userID = queryParams.userID;
     });
+    this.gameService.connectToRoomMessages(this.roomID).subscribe(this.onMessageRecieved.bind(this));
   }
 
   onMessageRecieved(message) {
@@ -36,12 +44,12 @@ export class PlayerComponent {
     const found = content.match(numberRegex);
 
     if (found && found.length) {
-      this.announceNumber(parseInt(found[0]));
+      this.announceNumber(parseInt(found[0], 10));
     }
   }
 
-  announceNumber(number) {
-    this.board.announce(number);
+  announceNumber(value: number) {
+    this.board.announce(value);
   }
 
   back() {
