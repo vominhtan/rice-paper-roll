@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { BingoGame } from '../../core/bingo.game';
 import { GameService } from '../../services/game.service';
-import { tap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 import { flatten } from 'lodash';
+import { SettingService } from '../../services/setting.service';
+import { Subject, empty } from 'rxjs';
 
 @Component({
   selector: BoardComponent.selector,
@@ -16,10 +18,15 @@ export class BoardComponent implements OnInit {
   @Input() game: BingoGame;
   @Input() roomID: string;
   @Input() userID: string;
+  playSoundSrc: Subject<any> = new Subject();
   voices: { [key: string]: any } = {};
 
-  constructor(private cdr: ChangeDetectorRef, private gameService: GameService) {
+  constructor(private cdr: ChangeDetectorRef, private gameService: GameService, private settingService: SettingService) {
     this.initVoice();
+
+    this.settingService.muted$.pipe(
+      switchMap(val => (val ? empty(): this.playSoundSrc.asObservable()))
+    ).subscribe(this.playSound.bind(this));
   }
 
   ngOnInit() {
@@ -41,9 +48,7 @@ export class BoardComponent implements OnInit {
             });
         }),
       )
-      .subscribe(() => {
-        this.cdr.detectChanges.bind(this.cdr);
-      });
+      .subscribe(this.cdr.detectChanges.bind(this.cdr));
   }
 
   initVoice() {
@@ -54,7 +59,11 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  announce(value: number) {
+  playSound(value) {
     this.voices[value].play();
+  }
+
+  announce(value: number) {
+    this.playSoundSrc.next(value);
   }
 }

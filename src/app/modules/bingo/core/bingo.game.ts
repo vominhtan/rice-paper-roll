@@ -268,7 +268,6 @@ export class Dealer {
   randomFromPool() {
     const idx = _.random(0, this.drawerState.numbersPoll.length - 1);
     this.shufflePool();
-    console.log(this.drawerState.numbersPoll);
     this.exposeNumber(this.drawerState.numbersPoll[idx]);
     this.drawerState.numbersPoll.splice(idx, 1);
     if (this.drawerState.numbersPoll.length === 0) {

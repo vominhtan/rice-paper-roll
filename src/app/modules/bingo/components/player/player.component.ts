@@ -5,6 +5,7 @@ import { SettingService } from '../../services/setting.service';
 import { Observable } from 'rxjs';
 import { getFullTreeParams } from '../../utils/common.utils';
 import { GameService } from '../../services/game.service';
+import { map, skip } from 'rxjs/operators';
 
 @Component({
   selector: PlayerComponent.selector,
@@ -34,7 +35,10 @@ export class PlayerComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.userID = queryParams.userID;
     });
-    this.gameService.connectToRoomMessages(this.roomID).subscribe(this.onMessageRecieved.bind(this));
+    this.gameService.connectToRoomMessages(this.roomID).pipe(
+      skip(1),
+      map((messages: any[]) => messages[0])
+    ).subscribe(this.onMessageRecieved.bind(this));
   }
 
   onMessageRecieved(message) {

@@ -9,6 +9,12 @@
     <button mat-fab (click)="back.emit()">
       <mat-icon aria-hidden="false">home</mat-icon>
     </button>
+    <button *ngIf="(muted$ | async) as muted" mat-fab (click)="toggleMute(!muted)">
+      <mat-icon aria-hidden="false">volume_off</mat-icon>
+    </button>
+    <button *ngIf="!(muted$ | async) as muted" mat-fab (click)="toggleMute(muted)">
+      <mat-icon aria-hidden="false">volume_up</mat-icon>
+    </button>
   </div>
   <div class="dealer-sidenav-content">
     <ng-content></ng-content>

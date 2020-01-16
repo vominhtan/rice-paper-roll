@@ -1,48 +1,24 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable, from, of } from 'rxjs';
 import * as firebase from 'firebase/app';
 
 import { GameService } from './game.service';
 import { User, Room } from '../models';
-import { switchMap, tap, mapTo, take, map } from 'rxjs/operators';
-import { Base } from '../models/base.model';
+import { switchMap, tap, mapTo, map } from 'rxjs/operators';
 import { BingoGame } from '../core/bingo.game';
-
-interface Game extends Base { }
-
-interface Board extends Base { }
-
-interface Player extends Base { }
-
-interface DocumentAccessor<T extends Base> {
-
-}
-
-interface CollectionAccessor<T extends Base, B extends DocumentAccessor<T>> {
-  deleteAll: any;
-  push: any;
-  fromID?: (id: string) => B;
-}
-
-interface GameAccessor extends DocumentAccessor<Game> {
-  boards: CollectionAccessor<Board, DocumentAccessor<Board>>;
-}
-
-interface RoomAccessor extends DocumentAccessor<Room> {
-  players: CollectionAccessor<Player, DocumentAccessor<Player>>;
-  messages: CollectionAccessor<any, DocumentAccessor<any>>;
-  games: CollectionAccessor<Game, GameAccessor>;
-}
+import { RoomCollectionsAccessor } from './firebase-daos/room.accessor';
 
 @Injectable()
 export class FirebaseGameService extends GameService {
   roomCol: AngularFirestoreCollection<Room>;
   userCol: AngularFirestoreCollection<User>;
+  roomsAccessor: RoomCollectionsAccessor;
 
   constructor(private afs: AngularFirestore) {
     super();
     this.roomCol = this.afs.collection<Room>('rooms');
+    this.roomsAccessor = new RoomCollectionsAccessor(this.roomCol);
     this.userCol = this.afs.collection<User>('users');
   }
 
@@ -77,121 +53,52 @@ export class FirebaseGameService extends GameService {
   }
 
   updateGame(roomID: string, userID: string, game: BingoGame): Observable<any> {
-    return this.fromRoomID(roomID)
+    return this.roomsAccessor
+      .fromID(roomID)
       .games.fromID('currentGame')
       .boards.push(userID, game);
   }
 
   connectToRoomMessages(roomID: string): Observable<any> {
-    // Todo refactor later
-    const roomMessageCollection = this.afs.collection(`rooms/${roomID}/messages`, ref =>
+    // TODO: refactor later
+    return this.roomsAccessor.fromID(roomID).ref.collection(`messages`, ref =>
       ref.orderBy('createdAt', 'asc').limitToLast(100),
+    ).stateChanges(['added']).pipe(
+      map(actions =>
+        actions.map(m => {
+          const data: any = m.payload.doc.data();
+          const id = m.payload.doc.id;
+          return { id, ...data };
+        }),
+      ),
     );
-    return roomMessageCollection.stateChanges(['added']);
+  }
+
+  private genId(): string {
+    return this.afs.createId();
   }
 
   private sendMessage(roomID: string, value: number): Observable<any> {
-    return this.fromRoomID(roomID).messages.push({
+    return this.roomsAccessor.fromID(roomID).messages.push(this.genId(), {
       createdAt: this.timestamp,
       hashtag: '',
       content: `[${value}]`,
     });
   }
 
-  private createCollectionsAccessor<T extends Base, B extends DocumentAccessor<T>>(
-    collectionRef: AngularFirestoreCollection<T>,
-  ): CollectionAccessor<T, B> {
-    const self = this;
-    return {
-      deleteAll(): Observable<any> {
-        return collectionRef.valueChanges({ idField: 'id' }).pipe(
-          take(1),
-          switchMap((values: T[]) => {
-            return from(
-              Promise.all(
-                values.map(value => {
-                  return collectionRef.doc(value.id).delete();
-                }),
-              ),
-            );
-          }),
-        );
-      },
-      push(id: string, data: string): Observable<any> {
-        let payload = data;
-        let uuid = id;
-        if (!payload) {
-          payload = id;
-          uuid = self.afs.createId();
-        }
-        return from(collectionRef.doc(uuid).set(payload));
-      }
-    };
-  }
-
-  private createGameCollectionsAccessor(
-    collectionRef: AngularFirestoreCollection<Game>,
-  ): CollectionAccessor<Game, GameAccessor> {
-    const self = this;
-    return {
-      deleteAll(): Observable<any> {
-        return collectionRef.valueChanges({ idField: 'id' }).pipe(
-          take(1),
-          switchMap((values: Game[]) => {
-            return from(
-              Promise.all(
-                values.map(value => {
-                  return collectionRef.doc(value.id).delete();
-                }),
-              ),
-            );
-          }),
-        );
-      },
-      push(id: string, data: string): Observable<any> {
-        let payload = data;
-        let uuid = id;
-        if (!payload) {
-          payload = id;
-          uuid = self.afs.createId();
-        }
-        return from(collectionRef.doc(uuid).set(payload));
-      },
-      fromID(id: string): GameAccessor {
-        return self.createGameDocumentAccessor(collectionRef.doc(id));
-      },
-    };
-  }
-
-
-  private createGameDocumentAccessor<T extends Base>(docRef: AngularFirestoreDocument<T>): GameAccessor {
-    return {
-      boards: this.createCollectionsAccessor(docRef.collection('boards')),
-    };
-  }
-
-  private fromRoomID(roomID: string): RoomAccessor {
-    const roomDoc = this.roomCol.doc(roomID);
-    return {
-      players: this.createCollectionsAccessor(roomDoc.collection('players')),
-      messages: this.createCollectionsAccessor(roomDoc.collection('messages')),
-      games: this.createGameCollectionsAccessor(roomDoc.collection('games')),
-    };
-  }
-
   private deleteAllMessageInRoom(roomID: string): Observable<any> {
-    return this.fromRoomID(roomID).messages.deleteAll();
+    return this.roomsAccessor.fromID(roomID).messages.deleteAll();
   }
 
   private addUserToRoom(user: User, roomID: string): Observable<any> {
     const userDoc = this.userCol.doc(user.id);
-    return this.fromRoomID(roomID).players.push(user.id, {
+    return this.roomsAccessor.fromID(roomID).players.push(user.id, {
       user: userDoc.ref,
     });
   }
 
   private upsertUser(username: string): Observable<any> {
-    const id = this.afs.createId();
+    const id = this.genId();
     return this.afs
       .collection<User>('users', ref => ref.where('username', '==', username))
       .valueChanges()
@@ -199,20 +106,20 @@ export class FirebaseGameService extends GameService {
         switchMap((users: User[]) => {
           return users && users.length <= 0
             ? from(
-              this.userCol.doc(id).set({
-                hashtag: 'player',
-                kind: 'user',
-                username,
-                id,
-              }),
-            ).pipe(tap(value => console.log(value)))
+                this.userCol.doc(id).set({
+                  hashtag: 'player',
+                  kind: 'user',
+                  username,
+                  id,
+                }),
+              ).pipe(tap(value => console.log(value)))
             : of(users[0]);
         }),
       );
   }
 
   private insertRoom(): Observable<Room> {
-    const id = this.afs.createId();
+    const id = this.genId();
     return from(this.roomCol.doc(id).set({})).pipe(mapTo({ id }));
   }
 }
