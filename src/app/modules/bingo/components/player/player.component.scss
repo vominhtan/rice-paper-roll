@@ -1,8 +1,48 @@
+@import '../../styles/style.scss';
+
 .player-component {
   height: 100%;
   display: flex;
   padding-top: 110px;
   padding-bottom: 10px;
   justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
+  align-content: center;
 }
+
+
+.mini-board-wrapper {
+  margin: 10px;
+  display: flex;
+  justify-content: start;
+
+  > * {
+    margin: 5px;
+  }
+}
+
+
+@include respond-to(small-handhelds) {
+  .mini-board-wrapper {
+    flex-direction: row;
+  }
+}
+
+@include respond-to(handhelds) {
+  .mini-board-wrapper {
+    flex-direction: column;
+  }
+}
+
+@include respond-to(medium-screens) {
+  .mini-board-wrapper {
+    flex-direction: column;
+  }
+}
+
+@include respond-to(wide-screens) {
+  .mini-board-wrapper {
+    flex-direction: column;
+  }
+}
+

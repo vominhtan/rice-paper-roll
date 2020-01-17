@@ -5,6 +5,7 @@ import {
   Input,
 } from '@angular/core';
 import { SettingService } from '../../services/setting.service';
+import { ChatbotService } from '../../services/chatbot.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -17,11 +18,18 @@ export class BingoMainLayoutComponent {
   @Input() hasSideMenu = false;
   muted$: Observable<boolean>;
 
-  constructor(private settingService: SettingService) {
+  constructor(
+    private settingService: SettingService,
+    private chatbotService: ChatbotService,
+    ) {
     this.muted$ = this.settingService.muted$;
+    this.muted$.subscribe((value) => {
+      this.chatbotService.speak(value ? 'volumeMuted' : 'volumeUnmuted');
+    });
   }
 
   toggleMute(value) {
     this.settingService.mute = value;
+
   }
 }

@@ -1,5 +1,5 @@
-import * as _ from 'lodash';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { filter, find, forEach, reduce, min, max, take, cloneDeep, random, chain } from 'lodash';
+import { Observable, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 export enum GameStatus {
@@ -21,6 +21,7 @@ interface Props {
   gameState: {
     board: Cell[][];
     bingoRowIndex?: number;
+    bingoCandidateRowIndexs?: number[];
     status: GameStatus;
   };
 }
@@ -51,6 +52,10 @@ export class BingoGame {
 
   get bingoRowIdx(): number {
     return this.props.gameState.bingoRowIndex;
+  }
+
+  get bingoCandidateRowIdxs(): number[] {
+    return this.props.gameState.bingoCandidateRowIndexs;
   }
 
   set gameStatus(status: GameStatus) {
@@ -87,11 +92,11 @@ export class BingoGame {
     function randomPullOut(columns: number, keep: number) {
       const columnIndexs: number[] = fill(0, columns - 1);
       return (array: any[]): any[] => {
-        const pullOutColumnIndexs = _.chain(columnIndexs)
+        const pullOutColumnIndexs = chain(columnIndexs)
           .tap(shuffle)
           .take(columns - keep)
           .value();
-        _.forEach(pullOutColumnIndexs, pullOutColumnIndex => {
+        forEach(pullOutColumnIndexs, pullOutColumnIndex => {
           array[pullOutColumnIndex] = null;
         });
         return array;
@@ -112,20 +117,24 @@ export class BingoGame {
     }
 
     function checkRule(array: any[][]): boolean {
-      const counts: any[] = _.reduce(array, (prev, row) => {
-        _.forEach(row, (cell, cellIdx) => {
-          prev[cellIdx] = prev[cellIdx] + (cell ? 1 : 0);
-        });
-        return prev;
-      }, [0, 0, 0, 0, 0, 0, 0, 0, 0]);
+      const counts: any[] = reduce(
+        array,
+        (prev, row) => {
+          forEach(row, (cell, cellIdx) => {
+            prev[cellIdx] = prev[cellIdx] + (cell ? 1 : 0);
+          });
+          return prev;
+        },
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      );
 
-      return _.max(counts) - _.min(counts) <= 2;
+      return max(counts) - min(counts) <= 2;
     }
 
-    let numberPools: any = _.chain(allNumbers)
+    let numberPools: any = chain(allNumbers)
       .groupBy(value => Math.floor((value === to ? to - 1 : value) / 10))
       .map(array => shuffle(array))
-      .map(array => _.take(array, 9))
+      .map(array => take(array, 9))
       .value();
 
     numberPools = invert(numberPools);
@@ -136,7 +145,7 @@ export class BingoGame {
       let temp = [];
       let newRow = [];
       do {
-        newRow = randomPullOutFn(_.cloneDeep(numberPools[rowIndex]));
+        newRow = randomPullOutFn(cloneDeep(numberPools[rowIndex]));
         temp = [...result, newRow];
       } while (!checkRule(temp));
       result.push(newRow);
@@ -160,11 +169,12 @@ export class BingoGame {
 
     this.props.gameState.board = newBoardState;
     delete this.props.gameState.bingoRowIndex;
+    delete this.props.gameState.bingoCandidateRowIndexs;
     this.props.gameState.status = GameStatus.INPROGRESS;
   }
 
   private getCellByNumber(ball: number): Cell {
-    return _.chain(this.boardState)
+    return chain(this.boardState)
       .flatten()
       .find(['value', ball])
       .value();
@@ -194,30 +204,47 @@ export class BingoGame {
     this.bingoRowFound(index);
   }
 
+  private findBingoCandidateRow() {
+    const bingoCandidateRowIdxs: number[] = [];
+    for (let idx = 0; idx < this.boardState.length; idx ++) {
+      if (this.isBingoCandidateRow(this.boardState[idx])) {
+        bingoCandidateRowIdxs.push(idx);
+      }
+    }
+    this.props.gameState.bingoCandidateRowIndexs = bingoCandidateRowIdxs;
+  }
+
   private bingoRowFound(index) {
     this.props.gameState.bingoRowIndex = index;
     this.props.gameState.status = index < 0 ? GameStatus.INPROGRESS : GameStatus.END;
   }
 
   private isBingoRow(row: Cell[]) {
-    return !_.find(row, ['status', CellStatus.UNCHECKED]);
+    return !find(row, ['status', CellStatus.UNCHECKED]);
+  }
+
+  private isBingoCandidateRow(row: Cell[]) {
+    return filter(row, ['status', CellStatus.UNCHECKED]).length === 1;
   }
 
   private changeCellStatus(cell: Cell, status?: CellStatus) {
     if (status) {
       cell.status = status;
       this.findBingoRow();
+      this.findBingoCandidateRow();
       this.changedSubject.next();
     } else {
       switch (cell.status) {
         case CellStatus.CHECKED:
           cell.status = CellStatus.UNCHECKED;
           this.findBingoRow();
+          this.findBingoCandidateRow();
           this.changedSubject.next();
           break;
         case CellStatus.UNCHECKED:
           cell.status = CellStatus.CHECKED;
           this.findBingoRow();
+          this.findBingoCandidateRow();
           this.changedSubject.next();
           break;
         default:
@@ -244,7 +271,7 @@ export class Dealer {
   drawerState: DrawerState;
 
   constructor(drawerState: DrawerState = Dealer.defaultDrawerState) {
-    this.drawerState = _.cloneDeep(drawerState);
+    this.drawerState = cloneDeep(drawerState);
     fill(1, 90, this.drawerState.numbersPoll);
   }
 
@@ -266,7 +293,7 @@ export class Dealer {
   }
 
   randomFromPool() {
-    const idx = _.random(0, this.drawerState.numbersPoll.length - 1);
+    const idx = random(0, this.drawerState.numbersPoll.length - 1);
     this.shufflePool();
     this.exposeNumber(this.drawerState.numbersPoll[idx]);
     this.drawerState.numbersPoll.splice(idx, 1);

@@ -5,19 +5,25 @@ $break-medium: 415px;
 $break-large: 1024px;
 
 @mixin respond-to($media) {
-  @if $media == small-handhelds {
+  @if $media==small-handhelds {
     @media only screen and (max-width: $break-small) {
       @content;
     }
-  } @else if $media == handhelds {
+  }
+
+  @else if $media==handhelds {
     @media only screen and (min-width: $break-small + 1) and (max-width: $break-medium - 1) {
       @content;
     }
-  } @else if $media == medium-screens {
+  }
+
+  @else if $media==medium-screens {
     @media only screen and (min-width: $break-medium + 1) and (max-width: $break-large - 1) {
       @content;
     }
-  } @else if $media == wide-screens {
+  }
+
+  @else if $media==wide-screens {
     @media only screen and (min-width: $break-large) {
       @content;
     }
@@ -61,11 +67,13 @@ $break-large: 1024px;
       user-select: none;
       border: none;
     }
+
     background-color: $bgColor;
 
     &.control {
       padding: 10px 10px 0 10px;
       border-radius: 10px 10px 0 0;
+
       thead {
         tr {
           th {
@@ -87,7 +95,37 @@ $break-large: 1024px;
 
       &.highlight {
         background-color: darken($selectedCellBgColor, 20%);
-        box-shadow: inset 0 7px 9px -7px rgba(0,0,0,0.4), inset 0 -7px 9px -7px rgba(0,0,0,0.4);
+        box-shadow: inset 0 7px 9px -7px rgba(0, 0, 0, 0.4), inset 0 -7px 9px -7px rgba(0, 0, 0, 0.4);
+      }
+
+      .candidate-background {
+        display: none;
+      }
+
+      &.bingo-candidate {
+        background-color: rgba(255, 255, 255, 0.89);
+
+        tbody {
+          tr {
+            td.cell.hasValue {
+              &:not(.selected) {
+                line-height: $cellSize - 10px;
+                border-radius: 100%;
+                background-color: #fff;
+                font-weight: bolder;
+                overflow: hidden;
+
+                .candidate-background {
+                  display: block;
+                  background: $selectedCellBgColor;
+                  height: 5px;
+                  float: left;
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
       }
 
       &:last-child {
@@ -107,6 +145,10 @@ $break-large: 1024px;
             @include cell-style($cellSize);
             font-size: 20px;
 
+            .hasValue {
+              cursor: pointer;
+            }
+
             &.selected {
               background-color: $selectedCellBgColor;
               color: $selectedCellColor;
@@ -119,6 +161,50 @@ $break-large: 1024px;
               }
             }
           }
+        }
+      }
+    }
+
+    &.mini-board {
+      width: 50px;
+      height: 50px;
+      padding: 2px;
+      border-radius: 2px;
+
+      .hasValue {
+        border-radius: 100%;
+        background-color: $selectedCellBgColor;
+        opacity: 0.2;
+
+        &.selected {
+          opacity: 1;
+          background-color: $selectedCellBgColor;
+        }
+      }
+    }
+  }
+}
+
+@mixin mini-table($color, $bgColor) {
+  $selectedCellBgColor: $color;
+  $selectedCellColor: $bgColor;
+
+  table {
+    background-color: $bgColor;
+    &.mini-board {
+      width: 50px;
+      height: 50px;
+      padding: 2px;
+      border-radius: 2px;
+
+      .hasValue {
+        border-radius: 100%;
+        background-color: $selectedCellBgColor;
+        opacity: 0.2;
+
+        &.selected {
+          opacity: 1;
+          background-color: $selectedCellBgColor;
         }
       }
     }

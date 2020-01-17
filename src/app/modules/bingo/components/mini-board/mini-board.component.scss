@@ -1,0 +1,7 @@
+@import '../../styles/style.scss';
+
+@each $name, $color, $bgColor in $colors {
+  .theme-#{$name} {
+    @include mini-table($bgColor, $color);
+  }
+}

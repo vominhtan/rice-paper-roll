@@ -4,6 +4,11 @@
   </div>
   <div class="player-component">
     <rpr-board #board [game]="game$ | async" [theme]="theme$ | async" [roomID]="roomID" [userID]="userID"></rpr-board>
-    <!-- <rpr-chat-room (messageRecieved)="onMessageRecieved($event)"></rpr-chat-room>   -->
+    <div class="mini-board-wrapper">
+      <rpr-mini-board [game]="game$ | async"></rpr-mini-board>
+      <rpr-mini-board [game]="game$ | async"></rpr-mini-board>
+      <rpr-mini-board [game]="game$ | async"></rpr-mini-board>
+      <rpr-mini-board [game]="game$ | async"></rpr-mini-board>
+    </div>
   </div>
 </rpr-bingo-main-layout>

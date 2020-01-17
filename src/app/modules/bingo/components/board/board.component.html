@@ -20,16 +20,26 @@
         </tr>
       </thead>
     </table>
-    <table cellspacing="0" cellpadding="0" class="row" *ngFor="let row of game.boardState; let i = index" [class.highlight]="game.bingoRowIdx === i">
+    <table
+      cellspacing="0"
+      cellpadding="0"
+      class="row"
+      *ngFor="let row of game.boardState; let i = index"
+      [class.highlight]="game.bingoRowIdx === i"
+      [class.bingo-candidate]="isBingoCandiate(i)"
+    >
       <tbody>
         <tr>
           <td
             *ngFor="let cell of row; let j = index"
             [class.selected]="cell.status === 'CHECKED'"
             [class.cell]="true"
+            [class.hasValue]="cell.value"
             (click)="game.check(i, j)"
           >
+            <div class="candidate-background"></div>
             {{ cell.value }}
+            <div class="candidate-background"></div>
           </td>
         </tr>
       </tbody>
@@ -49,30 +59,5 @@
         </tr>
       </tbody>
     </table>
-    <!-- <table cellspacing="0" cellpadding="0" class="game-board">
-      <tbody>
-        <tr class="divider">
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr *ngFor="let row of game.boardState; let i = index" [class.highlight]="game.bingoRowIdx === i">
-          <td
-            *ngFor="let cell of row; let j = index"
-            [class.selected]="cell.status === 'CHECKED'"
-            [class.cell]="true"
-            (click)="game.check(i, j)"
-          >
-            {{ cell.value }}
-          </td>
-        </tr>
-      </tbody>
-    </table> -->
   </div>
 </div>

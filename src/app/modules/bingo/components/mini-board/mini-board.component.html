@@ -1,0 +1,14 @@
+<div [ngClass]="[theme]">
+  <table cellspacing="1" cellpadding="0" class="mini-board">
+    <tbody>
+      <tr *ngFor="let row of game.boardState; let i = index">
+        <td
+          *ngFor="let cell of row; let j = index"
+          [class.selected]="cell.status === 'CHECKED'"
+          [class.cell]="true"
+          [class.hasValue]="cell.value"
+        ></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

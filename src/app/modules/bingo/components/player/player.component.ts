@@ -2,10 +2,11 @@ import { Component, ChangeDetectionStrategy, ViewChild, OnInit } from '@angular/
 import { BoardComponent } from '../board/board.component';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SettingService } from '../../services/setting.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { getFullTreeParams } from '../../utils/common.utils';
 import { GameService } from '../../services/game.service';
 import { map, skip } from 'rxjs/operators';
+import { BingoGame } from '../../core/bingo.game';
 
 @Component({
   selector: PlayerComponent.selector,
@@ -20,13 +21,15 @@ export class PlayerComponent implements OnInit {
   theme$: Observable<string>;
   roomID: string;
   userID: string;
+  game$: Observable<BingoGame>;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private settingService: SettingService,
-    private gameService: GameService) {
-
+    private gameService: GameService,
+  ) {
+    this.game$ = of(new BingoGame());
   }
 
   ngOnInit() {
@@ -35,10 +38,13 @@ export class PlayerComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.userID = queryParams.userID;
     });
-    this.gameService.connectToRoomMessages(this.roomID).pipe(
-      skip(1),
-      map((messages: any[]) => messages[0])
-    ).subscribe(this.onMessageRecieved.bind(this));
+    this.gameService
+      .connectToRoomMessages(this.roomID)
+      .pipe(
+        skip(1),
+        map((messages: any[]) => messages[0]),
+      )
+      .subscribe(this.onMessageRecieved.bind(this));
   }
 
   onMessageRecieved(message) {
