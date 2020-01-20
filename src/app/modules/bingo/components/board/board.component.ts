@@ -60,6 +60,7 @@ export class BoardComponent implements OnInit {
             .updateGame(this.roomID, this.userID, ({
               kind: 'board',
               boardState: flatten(this.game.boardState),
+              theme: this.theme,
             } as unknown) as BingoGame)
             .subscribe(value => {
               console.log(value);

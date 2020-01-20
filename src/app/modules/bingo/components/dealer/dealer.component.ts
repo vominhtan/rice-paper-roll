@@ -5,7 +5,7 @@ import { chain } from 'lodash';
 
 import { BingoGame, GameStatus, Dealer, CellStatus, Cell } from '../../core/bingo.game';
 import { BoardComponent } from '../board/board.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { SettingService } from '../../services/setting.service';
 import { getFullTreeParams } from '../../utils/common.utils';
 import { GameService } from '../../services/game.service';
@@ -26,6 +26,7 @@ export class DealerComponent implements OnInit {
   isGameInProgress$: Observable<boolean>;
   theme$: Observable<string>;
   roomID: string;
+  userID: string;
 
   @ViewChild('board', { static: true }) board: BoardComponent;
 
@@ -33,15 +34,19 @@ export class DealerComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private settingService: SettingService,
-    private gameService: GameService
-  ) { }
+    private gameService: GameService,
+  ) {}
 
   ngOnInit() {
     this.roomID = getFullTreeParams(this.activatedRoute)['roomID'];
+
+    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+      this.userID = queryParams.userID;
+    });
+
     this.dealer$ = this.dealerSubject.asObservable();
     this.game$ = this.gameSubject.asObservable();
     this.theme$ = this.settingService.colorTheme$;
-
 
     this.isGameInProgress$ = this.game$.pipe(
       filter(game => game !== null),
@@ -102,6 +107,6 @@ export class DealerComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['..'], { relativeTo: this.activatedRoute });
+    this.router.navigate(['..'], { relativeTo: this.activatedRoute, queryParamsHandling: 'merge' });
   }
 }

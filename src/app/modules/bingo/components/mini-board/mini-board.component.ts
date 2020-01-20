@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
-import { BingoGame } from '../../core/bingo.game';
+import { BingoGame, Cell } from '../../core/bingo.game';
 
 @Component({
   selector: MiniBoardComponent.selector,
@@ -9,16 +9,16 @@ import { BingoGame } from '../../core/bingo.game';
 export class MiniBoardComponent implements OnInit {
   static readonly selector = 'rpr-mini-board';
   @Input() theme = 'theme-red';
-  @Input() game: BingoGame;
-  @Input() roomID: string;
-  @Input() userID: string;
+  @Input() boardState: Cell[][];
+  // @Input() roomID: string;
+  // @Input() userID: string;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    if (!this.game) {
-      this.game = new BingoGame();
-    }
-    this.game.onChanged.subscribe(this.cdr.detectChanges.bind(this.cdr));
+    // if (!this.game) {
+    //   this.game = new BingoGame();
+    // }
+    // this.game.onChanged.subscribe(this.cdr.detectChanges.bind(this.cdr));
   }
 }

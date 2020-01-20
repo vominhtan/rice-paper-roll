@@ -1,11 +1,35 @@
 <div class="flex-component">
   <div [ngClass]="['wrapper', theme]">
-    <table cellspacing="0" cellpadding="0" class="control">
+    <div class="new-board">
+      <div class="header">
+        <div (click)="game.restart()">| Xóa |</div>
+        <div (click)="game.init()">| Tạo mới |</div>
+      </div>
+      <div class="row-group">
+        <div
+          *ngFor="let row of game.boardState; let i = index"
+          [class.row]="true"
+          [class.highlight]="game.bingoRowIdx === i"
+          [class.bingo-candidate]="isBingoCandiate(i)"
+        >
+          <div
+            [class.selected]="cell.status === 'CHECKED'"
+            [class.cell]="true"
+            [class.hasValue]="cell.value"
+            *ngFor="let cell of row; let j = index"
+            (click)="game.check(i, j)"
+          >
+            {{ cell.value }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <table cellspacing="0" cellpadding="0" class="control">
       <thead>
         <tr>
-          <th (click)="game.restart()" colspan="3">| Reset |</th>
+          <th (click)="game.restart()" colspan="3">| Xóa |</th>
           <th colspan="3"></th>
-          <th (click)="game.init()" colspan="3">| Reload |</th>
+          <th (click)="game.init()" colspan="3">| Tạo mới |</th>
         </tr>
         <tr class="divider">
           <th></th>
@@ -58,6 +82,6 @@
           <td></td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
   </div>
 </div>

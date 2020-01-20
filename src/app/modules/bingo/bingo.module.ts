@@ -19,6 +19,7 @@ import { FirebaseGameService } from './services/firebase-game.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChatbotService } from './services/chatbot.service';
 import { MiniBoardComponent } from './components/mini-board/mini-board.component';
+import { GameStatusComponent } from './components/game-status/game-status.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MiniBoardComponent } from './components/mini-board/mini-board.component
     GameRoomComponent,
     JoinGameComponent,
     MiniBoardComponent,
+    GameStatusComponent,
   ],
   providers: [SettingService, { provide: GameService, useClass: FirebaseGameService }, ChatbotService],
   imports: [MaterialModule, ChatModule, BingoRoutingModule, CommonModule, ReactiveFormsModule],

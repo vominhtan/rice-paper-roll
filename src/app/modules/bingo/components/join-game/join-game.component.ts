@@ -62,7 +62,7 @@ export class JoinGameComponent implements OnInit {
     if (this.credentialForm.invalid) return;
     const { roomId, username } = this.credentialForm.value;
     this.gameService.joinRoom(roomId, username).subscribe(({ room, user }: { room: Room; user: User }) => {
-      this.router.navigate([room.id, 'player'], {
+      this.router.navigate([room.id], {
         queryParams: {
           userID: user.id,
         },

@@ -4,11 +4,6 @@
   </div>
   <div class="player-component">
     <rpr-board #board [game]="game$ | async" [theme]="theme$ | async" [roomID]="roomID" [userID]="userID"></rpr-board>
-    <div class="mini-board-wrapper">
-      <rpr-mini-board [game]="game$ | async"></rpr-mini-board>
-      <rpr-mini-board [game]="game$ | async"></rpr-mini-board>
-      <rpr-mini-board [game]="game$ | async"></rpr-mini-board>
-      <rpr-mini-board [game]="game$ | async"></rpr-mini-board>
-    </div>
+    <rpr-game-status [roomID]="roomID"></rpr-game-status>
   </div>
 </rpr-bingo-main-layout>

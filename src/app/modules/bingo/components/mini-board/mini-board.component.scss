@@ -1,7 +1,75 @@
 @import '../../styles/style.scss';
 
-@each $name, $color, $bgColor in $colors {
+@mixin mini-board($size, $color, $bgColor) {
+  .mini-board {
+
+    $cell-size: $size;
+    $cell-selected-bg-color: $color;
+    $cell-selected-color: $bgColor;
+    $cell-candidate-color: $color;
+    $cell-color: $color;
+    $padding: 2px;
+    padding: $padding 0;
+    border-radius: $padding;
+    background-color: $bgColor;
+
+    .row-group {
+      padding: 0 $padding;
+
+      .row {
+        padding: 0 $padding;
+        margin: 0 0-$padding;
+        display: flex;
+        justify-items: center;
+
+        &.highlight {
+          background-color: darken($cell-selected-bg-color, 20%);
+          box-shadow: inset 0 7px 9px -7px rgba(0, 0, 0, 0.4), inset 0 -7px 9px -7px rgba(0, 0, 0, 0.4);
+        }
+
+        &.bingo-candidate {
+          background-color: rgba(darken($cell-selected-bg-color, 20%), $alpha: 0.2);
+
+          .cell.hasValue {
+            &:not(.selected) {
+              width: $cell-size - (2 * $padding);
+              height: $cell-size - (2 * $padding);
+              border-style: solid;
+              border-radius: 100%;
+              color: $cell-candidate-color;
+              border-color: $cell-candidate-color;
+              box-shadow: 1px 0 3px 0 rgba(0, 0, 0, 0.2), 3px 0 5px 0 rgba(0, 0, 0, 0.19);
+            }
+          }
+        }
+
+        .cell {
+          display: flex;
+          width: $cell-size;
+          height: $cell-size;
+          justify-content: center;
+          align-items: center;
+
+          &.hasValue {
+            border-radius: 100%;
+            background-color: $cell-selected-bg-color;
+            opacity: 0.2;
+          }
+
+          &.selected {
+            opacity: 1;
+            background-color: $cell-selected-bg-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+@each $name,
+$color,
+$bgColor in $colors {
   .theme-#{$name} {
-    @include mini-table($bgColor, $color);
+    @include mini-board(5px, $bgColor, $color);
   }
 }

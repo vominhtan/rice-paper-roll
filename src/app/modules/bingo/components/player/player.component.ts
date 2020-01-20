@@ -63,6 +63,9 @@ export class PlayerComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['..'], { relativeTo: this.activatedRoute });
+    this.router.navigate(['..'], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'merge',
+    });
   }
 }

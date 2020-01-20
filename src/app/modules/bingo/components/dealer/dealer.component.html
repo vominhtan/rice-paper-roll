@@ -3,7 +3,8 @@
     <rpr-setting></rpr-setting>
   </div>
   <div class="dealer-component">
-    <rpr-board #board [game]="game$ | async" [theme]="theme$ | async"></rpr-board>
+    <rpr-board #board [game]="game$ | async" [theme]="theme$ | async" [roomID]="roomID" [userID]="userID"></rpr-board>
+    <rpr-game-status [roomID]="roomID"></rpr-game-status>
     <rpr-drawer [dealer$]="dealer$" (restartDealer)="initDealer()" [theme]="theme$ | async" [excludedNumbers]="checkedNumbers$ | async"></rpr-drawer>
   </div>
 </rpr-bingo-main-layout>

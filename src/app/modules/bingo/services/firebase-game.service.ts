@@ -5,7 +5,7 @@ import * as firebase from 'firebase/app';
 
 import { GameService } from './game.service';
 import { User, Room } from '../models';
-import { switchMap, tap, mapTo, map } from 'rxjs/operators';
+import { switchMap, tap, mapTo, map, first } from 'rxjs/operators';
 import { BingoGame } from '../core/bingo.game';
 import { RoomCollectionsAccessor } from './firebase-daos/room.accessor';
 
@@ -28,6 +28,9 @@ export class FirebaseGameService extends GameService {
 
   joinRoom(roomID: string, userName: string): Observable<{ room: Room; user: User }> {
     return this.upsertUser(userName).pipe(
+      tap(user => {
+        console.log(user);
+      }),
       switchMap(
         (user: User) => this.addUserToRoom(user, roomID),
         (outerValue: User) => outerValue,
@@ -61,17 +64,26 @@ export class FirebaseGameService extends GameService {
 
   connectToRoomMessages(roomID: string): Observable<any> {
     // TODO: refactor later
-    return this.roomsAccessor.fromID(roomID).ref.collection(`messages`, ref =>
-      ref.orderBy('createdAt', 'asc').limitToLast(100),
-    ).stateChanges(['added']).pipe(
-      map(actions =>
-        actions.map(m => {
-          const data: any = m.payload.doc.data();
-          const id = m.payload.doc.id;
-          return { id, ...data };
-        }),
-      ),
-    );
+    return this.roomsAccessor
+      .fromID(roomID)
+      .ref.collection('messages', ref => ref.orderBy('createdAt', 'asc').limitToLast(100))
+      .stateChanges(['added'])
+      .pipe(
+        map(actions =>
+          actions.map(m => {
+            const data: any = m.payload.doc.data();
+            const id = m.payload.doc.id;
+            return { id, ...data };
+          }),
+        ),
+      );
+  }
+
+  getGameStatus(roomID: string, gameID: string): Observable<any> {
+    return this.roomsAccessor
+      .fromID(roomID)
+      .games.fromID(gameID)
+      .boards.ref.valueChanges();
   }
 
   private genId(): string {
@@ -99,21 +111,26 @@ export class FirebaseGameService extends GameService {
 
   private upsertUser(username: string): Observable<any> {
     const id = this.genId();
+    const newUser = {
+      hashtag: 'player',
+      kind: 'user',
+      createdAt: this.timestamp,
+      updatedAt: this.timestamp,
+      username,
+      id,
+    };
+    const updatedInfo = {
+      updatedAt: this.timestamp,
+    };
     return this.afs
       .collection<User>('users', ref => ref.where('username', '==', username))
       .valueChanges()
       .pipe(
+        first(),
         switchMap((users: User[]) => {
           return users && users.length <= 0
-            ? from(
-                this.userCol.doc(id).set({
-                  hashtag: 'player',
-                  kind: 'user',
-                  username,
-                  id,
-                }),
-              ).pipe(tap(value => console.log(value)))
-            : of(users[0]);
+            ? from(this.userCol.doc(id).set(newUser)).pipe(mapTo(newUser))
+            : from(this.userCol.doc(users[0].id).update(updatedInfo)).pipe(mapTo(users[0]));
         }),
       );
   }

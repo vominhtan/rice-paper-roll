@@ -7,6 +7,7 @@ import { BingoGame } from '../core/bingo.game';
 export abstract class GameService {
   abstract joinRoom(roomID: string, userName: string): Observable<{room: Room, user: User}>;
   abstract updateGame(roomID: string, userID: string, game: BingoGame): Observable<any>;
+  abstract getGameStatus(roomID: string, gameID: string): Observable<any>;
   abstract leaveRoom(roomID: string): void;
   abstract deleteMessages(roomID: string): Observable<any>;
   abstract announceNumber(roomID: string, value: number): Observable<any>;
