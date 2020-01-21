@@ -1,3 +1,8 @@
 <div class="mini-board-wrapper">
-  <rpr-mini-board *ngFor="let board of (boardStates$ | async)" [boardState]="board.boardState" [theme]="board.theme || 'theme-red'"></rpr-mini-board>
+  <rpr-mini-board
+    *ngFor="let board of boardStates$ | async"
+    [boardState]="board.boardState"
+    [theme]="board.theme || 'theme-red'"
+    [username]="board.username"
+  ></rpr-mini-board>
 </div>

@@ -27,6 +27,7 @@ export class DealerComponent implements OnInit {
   theme$: Observable<string>;
   roomID: string;
   userID: string;
+  username: string;
 
   @ViewChild('board', { static: true }) board: BoardComponent;
 
@@ -42,6 +43,7 @@ export class DealerComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.userID = queryParams.userID;
+      this.username = queryParams.username;
     });
 
     this.dealer$ = this.dealerSubject.asObservable();

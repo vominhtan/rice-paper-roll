@@ -1,5 +1,8 @@
 <div [ngClass]="[theme]">
   <div class="mini-board">
+    <div class="header">
+      <div>{{username}}</div>
+    </div>
     <div class="row-group">
       <div
         *ngFor="let row of boardState; let i = index"

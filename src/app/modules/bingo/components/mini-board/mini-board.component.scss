@@ -13,6 +13,15 @@
     border-radius: $padding;
     background-color: $bgColor;
 
+    .header {
+      background: darken($color, 20%);
+      font-size: 10px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2px;
+    }
+
     .row-group {
       padding: 0 $padding;
 

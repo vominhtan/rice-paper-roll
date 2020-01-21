@@ -21,6 +21,7 @@ export class BoardComponent implements OnInit {
   @Input() game: BingoGame;
   @Input() roomID: string;
   @Input() userID: string;
+  @Input() username: string;
   playSoundSrc: Subject<any> = new Subject();
   voices: { [key: string]: any } = {};
 
@@ -61,6 +62,7 @@ export class BoardComponent implements OnInit {
               kind: 'board',
               boardState: flatten(this.game.boardState),
               theme: this.theme,
+              username: this.username,
             } as unknown) as BingoGame)
             .subscribe(value => {
               console.log(value);

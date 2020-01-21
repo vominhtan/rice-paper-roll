@@ -73,6 +73,7 @@ export class JoinGameComponent implements OnInit {
       this.router.navigate(['rooms', room.id], {
         queryParams: {
           userID: user.id,
+          username: username,
         },
         relativeTo: this.activatedRoute,
         queryParamsHandling: 'merge',

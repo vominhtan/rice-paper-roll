@@ -9,6 +9,7 @@ import { BingoGame, Cell } from '../../core/bingo.game';
 export class MiniBoardComponent implements OnInit {
   static readonly selector = 'rpr-mini-board';
   @Input() theme = 'theme-red';
+  @Input() username = 'N/A';
   @Input() boardState: Cell[][];
   // @Input() roomID: string;
   // @Input() userID: string;

@@ -21,6 +21,7 @@ export class PlayerComponent implements OnInit {
   theme$: Observable<string>;
   roomID: string;
   userID: string;
+  username: string;
   game$: Observable<BingoGame>;
 
   constructor(
@@ -37,6 +38,7 @@ export class PlayerComponent implements OnInit {
     this.roomID = getFullTreeParams(this.activatedRoute).roomID;
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.userID = queryParams.userID;
+      this.username = queryParams.username;
     });
     if (this.roomID) {
     this.gameService

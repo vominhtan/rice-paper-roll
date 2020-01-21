@@ -3,7 +3,14 @@
     <rpr-setting></rpr-setting>
   </div>
   <div class="player-component">
-    <rpr-board #board [game]="game$ | async" [theme]="theme$ | async" [roomID]="roomID" [userID]="userID"></rpr-board>
+    <rpr-board
+      #board
+      [game]="game$ | async"
+      [theme]="theme$ | async"
+      [roomID]="roomID"
+      [userID]="userID"
+      [username]="username"
+    ></rpr-board>
     <rpr-game-status *ngIf="roomID" [roomID]="roomID"></rpr-game-status>
   </div>
 </rpr-bingo-main-layout>
