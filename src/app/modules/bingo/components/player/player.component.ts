@@ -34,7 +34,7 @@ export class PlayerComponent implements OnInit {
 
   ngOnInit() {
     this.theme$ = this.settingService.colorTheme$;
-    this.roomID = getFullTreeParams(this.activatedRoute)['roomID'];
+    this.roomID = getFullTreeParams(this.activatedRoute).roomID;
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.userID = queryParams.userID;
     });
@@ -52,11 +52,13 @@ export class PlayerComponent implements OnInit {
   onMessageRecieved(message) {
     const content = message.content as string;
     // Filter message
-    const numberRegex = /(?<=\[)\d*(?=\])/g;
+    // Safari does not support look behind regex
+    // const numberRegex = /(?<=\[)\d*(?=\])/g;
+    const numberRegex = /\[\d*\]/g;
     const found = content.match(numberRegex);
 
     if (found && found.length) {
-      this.announceNumber(parseInt(found[0], 10));
+      this.announceNumber(parseInt(found[0].replace('[', '').replace(']', ''), 10));
     }
   }
 
