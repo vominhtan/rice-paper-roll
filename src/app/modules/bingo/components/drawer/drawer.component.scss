@@ -1,34 +1,46 @@
 @import "../../styles/style.scss";
 
+
 @include respond-to(small-handhelds) {
 
-  @each $name, $color, $bgColor in $colors {
+  @each $name,
+  $color,
+  $bgColor in $colors {
     .theme-#{$name} {
-      @include table(29px, $bgColor, $color);
+      @include new-board(35px, $bgColor, $color);
     }
   }
 }
 
 @include respond-to(handhelds) {
-  @each $name, $color, $bgColor in $colors {
+
+  @each $name,
+  $color,
+  $bgColor in $colors {
     .theme-#{$name} {
-      @include table(32px, $bgColor, $color);
+      @include new-board(30px, $bgColor, $color);
     }
   }
 }
 
 @include respond-to(medium-screens) {
-  @each $name, $color, $bgColor in $colors {
+
+  @each $name,
+  $color,
+  $bgColor in $colors {
     .theme-#{$name} {
-      @include table(35px, $bgColor, $color);
+      @include new-board(40px, $bgColor, $color);
     }
   }
 }
 
 @include respond-to(wide-screens) {
-  @each $name, $color, $bgColor in $colors {
+
+  @each $name,
+  $color,
+  $bgColor in $colors {
     .theme-#{$name} {
-      @include table(40px, $bgColor, $color);
+      @include new-board(45px, $bgColor, $color);
     }
   }
 }

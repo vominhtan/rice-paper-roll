@@ -13,7 +13,28 @@ const routes: Routes = [
     component: JoinGameComponent,
   },
   {
-    path: ':roomID',
+    path: 'offline',
+    component: GameRoomComponent,
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        component: HomeComponent,
+      },
+      {
+        path: 'dealer',
+        pathMatch: 'full',
+        component: DealerComponent,
+      },
+      {
+        path: 'player',
+        pathMatch: 'full',
+        component: PlayerComponent,
+      },
+    ]
+  },
+  {
+    path: 'rooms/:roomID',
     component: GameRoomComponent,
     children: [
       {

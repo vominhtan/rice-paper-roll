@@ -1,50 +1,29 @@
 <div class="flex-component">
   <div [ngClass]="['wrapper', theme]">
-    <table cellspacing="0" cellpadding="0" class="control">
-      <thead>
-        <tr>
-          <th (click)="random()" colspan="3">| Random |</th>
-          <th *ngIf="autoStatus$ | async" (click)="pause()" colspan="4">| Pause |</th>
-          <th *ngIf="!(autoStatus$ | async)" (click)="resume()" colspan="4">| Auto |</th>
-          <th (click)="restart()" colspan="3">| Restart |</th>
-        </tr>
-        <tr class="divider">
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-    </table>
-    <table cellspacing="0" cellpadding="0" class="row">
-      <tbody *ngIf="dealerExposedNumbers$ | async as dealerExposedNumbers">
-        <tr *ngFor="let row of dealerExposedNumbers; let i = index">
-          <td
-            *ngFor="let cell of row; let j = index"
+    <div class="new-board">
+      <div class="header">
+        <div (click)="random()">| Gọi số |</div>
+        <div *ngIf="!(sortedStatus$ | async)" (click)="sort()">| Sắp xếp |</div>
+        <div *ngIf="sortedStatus$ | async" (click)="noSort()">| Sắp xếp |</div>
+        <div *ngIf="autoStatus$ | async" (click)="pause()">| Tạm Dừng |</div>
+        <div *ngIf="!(autoStatus$ | async)" (click)="resume()">| Tự gọi |</div>
+        <div (click)="restart()">| Chơi lại |</div>
+      </div>
+      <div class="row-group"  *ngIf="dealerExposedNumbers$ | async as dealerExposedNumbers">
+        <div
+          *ngFor="let row of dealerExposedNumbers; let i = index"
+          [class.row]="true"
+        >
+          <div
             [class.selected]="cell"
             [class.cell]="true"
             [class.recent]="cell === currentExposed"
+            *ngFor="let cell of row; let j = index"
           >
             {{ cell }}
-          </td>
-          <td *ngIf="row.length < 1" [class.cell]="true"></td>
-          <td *ngIf="row.length < 2" [class.cell]="true"></td>
-          <td *ngIf="row.length < 3" [class.cell]="true"></td>
-          <td *ngIf="row.length < 4" [class.cell]="true"></td>
-          <td *ngIf="row.length < 5" [class.cell]="true"></td>
-          <td *ngIf="row.length < 6" [class.cell]="true"></td>
-          <td *ngIf="row.length < 7" [class.cell]="true"></td>
-          <td *ngIf="row.length < 8" [class.cell]="true"></td>
-          <td *ngIf="row.length < 9" [class.cell]="true"></td>
-          <td *ngIf="row.length < 10" [class.cell]="true"></td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

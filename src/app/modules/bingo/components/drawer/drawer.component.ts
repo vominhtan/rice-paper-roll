@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { chain } from 'lodash';
 import { Dealer } from '../../core/bingo.game';
 import { filter, switchMap, map, mapTo, startWith, takeUntil } from 'rxjs/operators';
-import { Observable, combineLatest, Subject, interval, merge, empty } from 'rxjs';
+import { Observable, combineLatest, Subject, interval, merge, empty, BehaviorSubject, ReplaySubject } from 'rxjs';
 
 @Component({
   selector: DrawerComponent.selector,
@@ -15,6 +15,8 @@ export class DrawerComponent implements OnInit {
   private randomSubject: Subject<any> = new Subject();
   private pauseSubject: Subject<any> = new Subject();
   private resumeSubject: Subject<any> = new Subject();
+  private sortedSubject: Subject<any> = new Subject();
+  private noSortedSubject: Subject<any> = new Subject();
 
   @Input() dealer$: Observable<Dealer>;
   @Input() excludedNumbers: number[] = [];
@@ -24,6 +26,7 @@ export class DrawerComponent implements OnInit {
   dealerExposedNumbers$: Observable<any>;
   currentExposed$: Observable<number>;
   autoStatus$: Observable<boolean>;
+  sortedStatus$: Observable<boolean>;
   currentExposed: number;
 
   constructor() {}
@@ -43,6 +46,10 @@ export class DrawerComponent implements OnInit {
     const resume$ = this.resumeSubject.asObservable().pipe(mapTo(true));
     const autoStatus$ = merge(pause$, resume$).pipe(startWith(false));
     this.autoStatus$ = autoStatus$;
+    const sorted$ = this.sortedSubject.asObservable().pipe(mapTo(true));
+    const noSorted$ = this.noSortedSubject.asObservable().pipe(mapTo(false));
+    const sortedStatus$ = merge(sorted$, noSorted$).pipe(startWith(true));
+    this.sortedStatus$ = sortedStatus$;
 
     this.dealer$
       .pipe(
@@ -68,15 +75,17 @@ export class DrawerComponent implements OnInit {
         dealer.randomFromPool();
       });
 
-    this.dealerExposedNumbers$ = combineLatest(this.currentExposed$, this.dealer$).pipe(
-      filter(([currentExposed, dealer]) => currentExposed !== null && dealer !== null),
-      map(([currentExposed, dealer]) =>
-        chain(dealer.drawerState.exposedNumbers)
-          .difference(this.excludedNumbers)
-          .sortBy()
-          .chunk(10)
-          .value(),
-      ),
+    const subject = new ReplaySubject<any>();
+    combineLatest(this.currentExposed$, this.dealer$).subscribe(subject);
+    this.dealerExposedNumbers$ = sortedStatus$.pipe(
+      switchMap((sorted) => subject.asObservable().pipe(
+          filter(([currentExposed, dealer]) => currentExposed !== null && dealer !== null),
+          map(([currentExposed, dealer]) => {
+            const diferrentNumber = chain(dealer.drawerState.exposedNumbers).difference(this.excludedNumbers);
+            return (sorted ? diferrentNumber.sortBy() : diferrentNumber).chunk(10).value();
+          }),
+        )
+      )
     );
   }
 
@@ -90,6 +99,14 @@ export class DrawerComponent implements OnInit {
 
   random() {
     this.randomSubject.next();
+  }
+
+  sort() {
+    this.sortedSubject.next();
+  }
+
+  noSort() {
+    this.noSortedSubject.next();
   }
 
   restart() {

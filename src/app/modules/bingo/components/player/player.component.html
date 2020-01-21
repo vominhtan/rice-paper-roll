@@ -4,6 +4,6 @@
   </div>
   <div class="player-component">
     <rpr-board #board [game]="game$ | async" [theme]="theme$ | async" [roomID]="roomID" [userID]="userID"></rpr-board>
-    <rpr-game-status [roomID]="roomID"></rpr-game-status>
+    <rpr-game-status *ngIf="roomID" [roomID]="roomID"></rpr-game-status>
   </div>
 </rpr-bingo-main-layout>

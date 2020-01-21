@@ -17,4 +17,8 @@ export class HomeComponent implements OnInit {
       queryParamsHandling: 'merge',
     });
   }
+
+  back() {
+    this.router.navigate(['bingo']);
+  }
 }

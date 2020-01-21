@@ -89,10 +89,11 @@ export class BoardComponent implements OnInit {
 
   toText(value: number): string {
     const text = '' + value;
-    console.log('1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣');
-    return `🎲 => ${text
+    const msg = `🎲 => ${text
       .split('')
       .map(character => ballTexts[parseInt(character, 10)])
       .join('')}`;
+    console.log(msg);
+    return msg;
   }
 }

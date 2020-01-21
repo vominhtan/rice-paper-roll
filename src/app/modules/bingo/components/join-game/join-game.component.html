@@ -3,7 +3,7 @@
     <div class="row">
       <div class="diamond-shape-wrapper">
         <div class="container diamond-shape">
-          <div class="item-text" (click)="createNewRoom()">Tạo phòng chơi mới</div>
+          <div class="item-text" (click)="gotoOfflineRoom()">Chơi offline</div>
         </div>
       </div>
       <div class="diamond-shape-wrapper">
@@ -16,7 +16,7 @@
       <div class="diamond-shape-wrapper">
         <div class="container diamond-shape" [ngClass]="{ open: showJoinRoomForm }">
           <ng-container *ngIf="!showJoinRoomForm; else joinFormTpl">
-            <div class="item-text" (click)="displayJoinRoomForm()">Vào phòng</div>
+            <div class="item-text" (click)="displayJoinRoomForm()">Chơi online</div>
           </ng-container>
           <ng-template #joinFormTpl>
             <ng-container [formGroup]="credentialForm">

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription, Subject, BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { switchMap, filter, map } from 'rxjs/operators';
+import { switchMap, filter, map, tap } from 'rxjs/operators';
 import { chain } from 'lodash';
 
 import { BingoGame, GameStatus, Dealer, CellStatus, Cell } from '../../core/bingo.game';
@@ -81,11 +81,18 @@ export class DealerComponent implements OnInit {
         if (this.dealerSubscription) {
           this.dealerSubscription.unsubscribe();
         }
-        this.dealerSubscription = dealer.onExposedNumber.subscribe(value => {
-          this.gameService.announceNumber(this.roomID, value);
-          this.announceNumber(value);
-          game.checkByNumber(value);
-        });
+        this.dealerSubscription = dealer.onExposedNumber
+          .pipe(
+            tap(value => {
+              if (this.roomID) {
+                this.gameService.announceNumber(this.roomID, value);
+              }
+            }),
+          )
+          .subscribe(value => {
+            this.announceNumber(value);
+            game.checkByNumber(value);
+          });
       });
 
     this.initDealer();
@@ -103,7 +110,9 @@ export class DealerComponent implements OnInit {
 
   initDealer() {
     this.dealerSubject.next(new Dealer());
-    this.gameService.deleteMessages(this.roomID).subscribe();
+    if (this.roomID) {
+      this.gameService.deleteMessages(this.roomID).subscribe();
+    }
   }
 
   back() {

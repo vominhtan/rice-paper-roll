@@ -36,6 +36,14 @@ export class JoinGameComponent implements OnInit {
     this.router.navigate([path], { relativeTo: this.activatedRoute });
   }
 
+  gotoOfflineRoom() {
+    this.router.navigate(['offline'], {
+      queryParams: {},
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'merge',
+    });
+  }
+
   createNewRoom() {
     this.gameService.createNewRoom().subscribe((room: Room) => {
       this.goto(room.id);
@@ -62,7 +70,7 @@ export class JoinGameComponent implements OnInit {
     if (this.credentialForm.invalid) return;
     const { roomId, username } = this.credentialForm.value;
     this.gameService.joinRoom(roomId, username).subscribe(({ room, user }: { room: Room; user: User }) => {
-      this.router.navigate([room.id], {
+      this.router.navigate(['rooms', room.id], {
         queryParams: {
           userID: user.id,
         },

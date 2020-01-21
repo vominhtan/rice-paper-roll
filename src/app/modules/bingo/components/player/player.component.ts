@@ -38,6 +38,7 @@ export class PlayerComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.userID = queryParams.userID;
     });
+    if (this.roomID) {
     this.gameService
       .connectToRoomMessages(this.roomID)
       .pipe(
@@ -45,6 +46,7 @@ export class PlayerComponent implements OnInit {
         map((messages: any[]) => messages[0]),
       )
       .subscribe(this.onMessageRecieved.bind(this));
+    }
   }
 
   onMessageRecieved(message) {

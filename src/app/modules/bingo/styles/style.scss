@@ -53,132 +53,80 @@ $break-large: 1024px;
   }
 }
 
-
-@mixin table($cellSize, $color, $bgColor) {
-  $selectedCellBgColor: $color;
-  $selectedCellColor: $bgColor;
-
-  table {
-    * {
-      user-select: none;
-      font-family: 'Montserrat', sans-serif;
-      color: $color;
-      // background-color: #23272a;
-      user-select: none;
-      border: none;
-    }
-
+@mixin new-board($size, $color, $bgColor) {
+  .new-board {
+    $cell-size: $size;
+    $cell-selected-bg-color: $color;
+    $cell-selected-color: $bgColor;
+    $cell-candidate-color: $color;
+    $cell-color: $color;
+    $height: 40px;
+    $padding: 4px;
     background-color: $bgColor;
+    * {
+      font-family: 'Montserrat', sans-serif;
+    }
 
-    &.control {
-      padding: 10px 10px 0 10px;
-      border-radius: 10px 10px 0 0;
-
-      thead {
-        tr {
-          th {
-            @include cell-style($cellSize);
-            display: table-cell;
-          }
-
-          &.divider {
-            th {
-              height: 1px;
-            }
-          }
-        }
+    .header {
+      padding: $padding;
+      height: $height;
+      display: flex;
+      justify-items: center;
+      justify-content: space-around;
+      align-items: center;
+      > div {
+        color: $cell-color;
+        user-select: none;
+        cursor: pointer;
       }
     }
 
-    &.row {
-      padding: 0px 10px 0 10px;
+    .row-group {
+      padding: $padding;
+      .row {
+        padding: 0 $padding;
+        margin: 0 0-$padding;
+        display: flex;
+        justify-items: center;
 
-      &.highlight {
-        background-color: darken($selectedCellBgColor, 20%);
-        box-shadow: inset 0 7px 9px -7px rgba(0, 0, 0, 0.4), inset 0 -7px 9px -7px rgba(0, 0, 0, 0.4);
-      }
-
-      .candidate-background {
-        display: none;
-      }
-
-      &.bingo-candidate {
-        background-color: rgba(255, 255, 255, 0.89);
-
-        tbody {
-          tr {
-            td.cell.hasValue {
-              &:not(.selected) {
-                line-height: $cellSize - 10px;
-                border-radius: 100%;
-                background-color: #fff;
-                font-weight: bolder;
-                overflow: hidden;
-
-                .candidate-background {
-                  display: block;
-                  background: $selectedCellBgColor;
-                  height: 5px;
-                  float: left;
-                  width: 100%;
-                }
-              }
-            }
-          }
+        &.highlight {
+          background-color: darken($cell-selected-bg-color, 20%);
+          box-shadow: inset 0 7px 9px -7px rgba(0, 0, 0, 0.4), inset 0 -7px 9px -7px rgba(0, 0, 0, 0.4);
         }
-      }
 
-      &:last-child {
-        border-radius: 0 0 10px 10px;
-        padding: 0px 10px 10px 10px;
-      }
-
-      tbody {
-        tr {
-          &.divider {
-            td {
-              width: $cellSize;
-            }
-          }
-
-          td.cell {
-            @include cell-style($cellSize);
-            font-size: 20px;
-
-            .hasValue {
-              cursor: pointer;
-            }
-
-            &.selected {
-              background-color: $selectedCellBgColor;
-              color: $selectedCellColor;
-              font-weight: bold;
+        &.bingo-candidate {
+          background-color: rgba(darken($cell-selected-bg-color, 20%), $alpha: 0.2);
+          .cell.hasValue {
+            &:not(.selected) {
+              border-width: 2px;
+              width: $cell-size - (2 * 2px);
+              height: $cell-size - (2 * 2px);
+              border-style: solid;
               border-radius: 100%;
+              color: $cell-candidate-color;
+              border-color: $cell-candidate-color;
               box-shadow: 1px 0 3px 0 rgba(0, 0, 0, 0.2), 3px 0 5px 0 rgba(0, 0, 0, 0.19);
-
-              &.recent {
-                background-color: darken($selectedCellBgColor, 20%);
-              }
             }
           }
         }
-      }
-    }
 
-    &.mini-board {
-      width: 50px;
-      height: 50px;
-      padding: 2px;
-      border-radius: 2px;
+        .cell {
+          display: flex;
+          width: $cell-size;
+          height: $cell-size;
+          justify-content: center;
+          align-items: center;
+          &.hasValue {
+            color: $cell-color;
+          }
 
-      .hasValue {
-        border-radius: 100%;
-        background-color: $selectedCellBgColor;
-        opacity: 0.2;
-
-        &.selected {
-          opacity: 1;
-          background-color: $selectedCellBgColor;
+          &.selected {
+            border-radius: 100%;
+            background-color: $cell-selected-bg-color;
+            color: $cell-selected-color;
+            font-weight: bold;
+            box-shadow: 1px 0 3px 0 rgba(0, 0, 0, 0.2), 3px 0 5px 0 rgba(0, 0, 0, 0.19);
+          }
         }
       }
     }
